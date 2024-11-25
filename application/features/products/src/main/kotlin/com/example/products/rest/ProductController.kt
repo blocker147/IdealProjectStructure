@@ -1,7 +1,7 @@
 package com.example.products.rest
 
-import com.example.products.Product
-import com.example.products.ProductService
+import com.example.domain.products.Product
+import com.example.domain.products.ProductService
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PostMapping

@@ -1,7 +1,7 @@
 package com.example.customers.rest
 
-import com.example.customers.Customer
-import com.example.customers.CustomerService
+import com.example.domain.customers.Customer
+import com.example.domain.customers.CustomerService
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping

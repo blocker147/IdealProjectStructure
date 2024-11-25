@@ -1,18 +1,18 @@
-package com.example.customers
+package com.example.domain.customers
 
-import com.example.products.ProductService
+import com.example.domain.products.ProductService
 
-class CustomerService(
+class CustomerServiceImpl(
     private val customerRepository: CustomerRepository,
     private val productService: ProductService
-) {
+): CustomerService {
     /** Attempts to create a customer */
-    fun createCustomer(customer: Customer): Customer {
+    override fun createCustomer(customer: Customer): Customer {
         return customerRepository.saveCustomer(customer)
     }
 
     /** Attempts to add product to a customer */
-    fun addProductToCustomer(customerId: String, productId: String): Customer {
+    override fun addProductToCustomer(customerId: String, productId: String): Customer {
         val customer = customerRepository.findById(customerId)
         productService.decreaseProductCount(productId, 1)
         customer.productIds.add(productId)

@@ -1,7 +1,7 @@
-package com.example
+package com.example.infrastructure
 
-import com.example.products.Product
-import com.example.products.ProductRepository
+import com.example.domain.products.Product
+import com.example.domain.products.ProductRepository
 import java.util.UUID
 
 class InMemoryProductRepository : ProductRepository {

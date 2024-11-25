@@ -1,4 +1,4 @@
-package com.example.customers
+package com.example.domain.customers
 
 data class Customer(
     val id: String? = null,

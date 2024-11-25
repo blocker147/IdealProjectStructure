@@ -1,4 +1,4 @@
-package com.example.customers
+package com.example.domain.customers
 
 interface CustomerRepository {
     fun saveCustomer(customer: Customer): Customer

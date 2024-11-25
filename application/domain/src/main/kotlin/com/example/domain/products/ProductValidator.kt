@@ -1,4 +1,4 @@
-package com.example.products
+package com.example.domain.products
 
 class ProductValidator {
     /** Validates product */

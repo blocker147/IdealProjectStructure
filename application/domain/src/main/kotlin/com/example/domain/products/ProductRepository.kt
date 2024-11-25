@@ -1,4 +1,4 @@
-package com.example.products
+package com.example.domain.products
 
 interface ProductRepository {
     fun save(product: Product): Product
