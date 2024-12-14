@@ -7,8 +7,12 @@ import com.example.domain.products.ProductRepository
 import com.example.domain.products.ProductService
 import com.example.domain.products.ProductServiceImpl
 import com.example.domain.products.ProductValidator
-import com.example.infrastructure.InMemoryCustomerRepository
-import com.example.infrastructure.InMemoryProductRepository
+import com.example.domain.products.ProductValidatorImpl
+import com.example.features.products.usecase.ProductMapper
+import com.example.features.products.usecase.ProductUseCaseImpl
+import com.example.features.products.usecase.ProductsUseCase
+import com.example.infrastructure.inmemory.InMemoryCustomerRepository
+import com.example.infrastructure.inmemory.InMemoryProductRepository
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 
@@ -24,7 +28,7 @@ class BeanConfiguration {
 
     @Bean
     fun productValidator(): ProductValidator {
-        return ProductValidator()
+        return ProductValidatorImpl()
     }
 
     @Bean
@@ -43,5 +47,18 @@ class BeanConfiguration {
     @Bean
     fun customerRepository(): CustomerRepository {
         return InMemoryCustomerRepository()
+    }
+
+    @Bean
+    fun productsUseCase(
+        productService: ProductService,
+        productMapper: ProductMapper,
+    ): ProductsUseCase {
+        return ProductUseCaseImpl(productService, productMapper)
+    }
+
+    @Bean
+    fun productMapper(): ProductMapper {
+        return ProductMapper()
     }
 }

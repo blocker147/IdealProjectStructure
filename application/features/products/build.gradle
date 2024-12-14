@@ -1,8 +1,10 @@
 plugins {
+    id 'java'
     id 'org.jetbrains.kotlin.jvm' version '1.9.10'
     id 'org.jetbrains.kotlin.plugin.spring' version '1.9.10'
     id 'org.springframework.boot' version '3.1.4'
     id 'io.spring.dependency-management' version '1.1.3'
+    id 'org.openapi.generator' version '7.0.0'
 }
 
 repositories {
@@ -20,7 +22,51 @@ dependencies {
     implementation 'org.jetbrains.kotlin:kotlin-reflect'
     implementation 'org.jetbrains.kotlin:kotlin-stdlib-jdk8'
     implementation 'io.github.microutils:kotlin-logging-jvm:3.0.5'
+
+    /* open-api-generator */
+    compileOnly 'javax.servlet:javax.servlet-api:4.0.1'
+//    compileOnly 'jakarta.servlet:jakarta.servlet-api:6.1.0'
+
+    testImplementation("org.springframework.boot:spring-boot-starter-test")
+    testImplementation("io.mockk:mockk:1.13.7")
+    testImplementation("io.kotest:kotest-assertions-core:5.7.2")
+    testImplementation("org.junit.jupiter:junit-jupiter:5.10.0")
 }
+
+openApiGenerate {
+    generatorName = "kotlin-spring" // Use the Kotlin Spring generator
+    inputSpec = "$projectDir/src/main/resources/open-api-specs/products-v1.yaml" // Path to the YAML file
+    outputDir = "$buildDir/generated" // Output directory for generated code
+    apiPackage = "com.example.features.products.api" // Package for API interfaces
+    modelPackage = "com.example.features.products.models" // Package for models
+
+    configOptions = [
+            interfaceOnly: "true",    // Generate only interfaces (no controllers)
+            skipDefaultInterface: "true", // Don't generate default interfaces
+            useBeanValidation: "false", // Don't use Bean Validation
+            documentationProvider: "none", // Don't generate documentation
+            exceptionHandler: "false", // Don't generate exception handlers
+//            dateLibrary: "java8",     // Use Java 8 date library
+            useTags: "true"           // Separate files by tags (optional)
+    ]
+}
+
+compileKotlin {
+    dependsOn "openApiGenerate"
+}
+
+sourceSets {
+    main {
+        java {
+            srcDirs += "$buildDir/generated/src/main/kotlin"
+        }
+    }
+}
+
 tasks.named('bootJar').configure {
     enabled = false
+}
+
+tasks.test {
+    useJUnitPlatform()
 }

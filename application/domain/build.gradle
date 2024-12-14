@@ -7,5 +7,13 @@ repositories {
 }
 
 dependencies {
-    implementation 'org.jetbrains.kotlin:kotlin-stdlib-jdk8'
+    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
+
+    testImplementation("io.mockk:mockk:1.13.7")
+    testImplementation("io.kotest:kotest-assertions-core:5.7.2")
+    testImplementation("org.junit.jupiter:junit-jupiter:5.10.0")
+}
+
+tasks.test {
+    useJUnitPlatform()
 }

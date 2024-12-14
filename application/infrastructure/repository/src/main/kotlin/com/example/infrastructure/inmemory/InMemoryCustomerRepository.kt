@@ -1,4 +1,4 @@
-package com.example.infrastructure
+package com.example.infrastructure.inmemory
 
 import com.example.domain.customers.Customer
 import com.example.domain.customers.CustomerRepository
