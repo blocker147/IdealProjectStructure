@@ -15,6 +15,7 @@ import com.example.infrastructure.inmemory.InMemoryCustomerRepository
 import com.example.infrastructure.inmemory.InMemoryProductRepository
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
+import java.time.Clock
 
 @Configuration
 class BeanConfiguration {
@@ -60,5 +61,10 @@ class BeanConfiguration {
     @Bean
     fun productMapper(): ProductMapper {
         return ProductMapper()
+    }
+
+    @Bean
+    fun clock(): Clock {
+        return Clock.systemDefaultZone()
     }
 }

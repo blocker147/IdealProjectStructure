@@ -44,6 +44,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Product'
+        '404':
+          description: Product not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
 
 components:
   schemas:
@@ -60,3 +66,22 @@ components:
       required:
         - title
         - count
+
+    ErrorResponse:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        timestamp:
+          type: string
+          format: local-date-time
+          example: '1997-01-01T00:00:00Z'
+        errorMessage:
+          type: string
+        specificInfo:
+          type: object
+      required:
+        - code
+        - timestamp
+        - errorMessage
