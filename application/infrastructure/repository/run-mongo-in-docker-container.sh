@@ -1,0 +1,1 @@
+docker run --name test_mongodb -d --rm -p 27017:27017 mongo

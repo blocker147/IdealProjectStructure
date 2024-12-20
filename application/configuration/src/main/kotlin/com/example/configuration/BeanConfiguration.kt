@@ -12,7 +12,8 @@ import com.example.features.products.usecase.ProductMapper
 import com.example.features.products.usecase.ProductUseCaseImpl
 import com.example.features.products.usecase.ProductsUseCase
 import com.example.infrastructure.inmemory.InMemoryCustomerRepository
-import com.example.infrastructure.inmemory.InMemoryProductRepository
+import com.example.infrastructure.mongo.ProductDao
+import com.example.infrastructure.mongo.ProductRepositoryImpl
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import java.time.Clock
@@ -33,8 +34,11 @@ class BeanConfiguration {
     }
 
     @Bean
-    fun productRepository(): ProductRepository {
-        return InMemoryProductRepository()
+    fun productRepository(
+        productDao: ProductDao,
+        clock: Clock,
+    ): ProductRepository {
+        return ProductRepositoryImpl(productDao, clock)
     }
 
     @Bean
