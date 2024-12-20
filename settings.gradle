@@ -1,3 +1,6 @@
 rootProject.name = 'IdealProjectStructure'
-include 'application'
-
+include 'application:configuration'
+include 'application:domain'
+include 'application:infrastructure:repository'
+include 'application:features:customers'
+include 'application:features:products'

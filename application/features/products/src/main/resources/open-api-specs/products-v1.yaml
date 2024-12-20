@@ -1,0 +1,87 @@
+openapi: 3.0.0
+info:
+  title: Products API
+  description: API for managing products
+  version: 1.0.0
+
+paths:
+  /products:
+    post:
+      tags:
+        - Products
+      summary: Creates a product
+      operationId: createProduct
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Product'
+      responses:
+        '201':
+          description: Created product
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product'
+
+  /products/{id}:
+    get:
+      tags:
+        - Products
+      summary: Retrieve a specific product by ID
+      operationId: getProductById
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: The requested product
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product'
+        '404':
+          description: Product not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+components:
+  schemas:
+    Product:
+      type: object
+      properties:
+        id:
+          type: string
+        title:
+          type: string
+        count:
+          type: integer
+          format: int32
+      required:
+        - title
+        - count
+
+    ErrorResponse:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        timestamp:
+          type: string
+          format: local-date-time
+          example: '1997-01-01T00:00:00Z'
+        errorMessage:
+          type: string
+        specificInfo:
+          type: object
+      required:
+        - code
+        - timestamp
+        - errorMessage
