@@ -24,7 +24,6 @@ paths:
               schema:
                 $ref: '#/components/schemas/ProductNutrition'
 
-
 components:
   schemas:
     ProductNutrition:
