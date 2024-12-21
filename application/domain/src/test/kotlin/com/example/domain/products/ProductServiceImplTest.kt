@@ -46,13 +46,19 @@ class ProductServiceImplTest {
     @Test
     fun `when product doesn't exist in DB try to request and cache it and - then return product`() {
         val productId = "1"
-        val product = ProductFactory.createProduct(id = productId)
-        every { productNutritionClientMock.findById(productId) } returns product
+        val productNutrition = ProductFactory.createProductNutrition()
+        val expected = Product(
+            id = "1",
+            title = "Random title",
+            count = 100,
+            nutrition = productNutrition,
+        )
+        every { productNutritionClientMock.findById(productId) } returns productNutrition
 
         val actual = target.getProductById(productId)
 
         verify { productNutritionClientMock.findById(productId) }
-        actual shouldBe product
+        actual shouldBe expected
     }
 
     @Test

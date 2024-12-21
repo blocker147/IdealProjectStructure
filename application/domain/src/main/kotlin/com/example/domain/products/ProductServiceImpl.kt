@@ -27,7 +27,12 @@ class ProductServiceImpl(
 
     private fun fetchAndCacheProduct(id: String): Product {
         return try {
-            val product = productNutritionClient.findById(id)
+            val productNutrition = productNutritionClient.findById(id)
+            val product = Product(
+                title = "Random title",
+                count = 100,
+                nutrition = productNutrition,
+            )
             log.info("Product with id: $id found in external service. Caching it.")
             productRepository.save(product)
         } catch (e: RuntimeException) {

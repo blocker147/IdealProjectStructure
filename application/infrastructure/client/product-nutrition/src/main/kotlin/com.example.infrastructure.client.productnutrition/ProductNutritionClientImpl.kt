@@ -1,6 +1,6 @@
 package com.example.infrastructure.client.productnutrition
 
-import com.example.domain.products.Product as ProductDomain
+import com.example.domain.products.ProductNutrition as ProductNutritionDomain
 import com.example.domain.products.ProductNutritionClient
 import com.example.infrastructure.client.productnutrition.api.ProductNutritionApi
 import com.example.infrastructure.client.productnutrition.invoker.ApiClient
@@ -10,9 +10,11 @@ import feign.jackson.JacksonEncoder
 import feign.okhttp.OkHttpClient
 import feign.slf4j.Slf4jLogger
 
-class ProductNutritionClientImpl : ProductNutritionClient {
+class ProductNutritionClientImpl(
+    private val productNutritionMapper: ProductNutritionMapper,
+) : ProductNutritionClient {
 
-    override fun findById(id: String): ProductDomain {
+    override fun findById(id: String): ProductNutritionDomain {
         val apiClient = ApiClient()
         apiClient.basePath = "http://localhost:8081/product-nutrition"  // must be provided by configuration
         val feignClient = apiClient.feignBuilder
@@ -35,8 +37,6 @@ class ProductNutritionClientImpl : ProductNutritionClient {
             .target(ProductNutritionApi::class.java, apiClient.basePath)
 
         val productNutrition = feignClient.getProductById("1")
-        println(productNutrition)
-
-        return ProductDomain(title = "hola", count = 1)
+        return productNutritionMapper.map(productNutrition)
     }
 }
