@@ -20,7 +20,7 @@ class ProductServiceImpl(
         return try {
             productRepository.findById(id)
         } catch (e: RuntimeException) {
-            log.warn("Product with id: $id not found in database. Attempting to request it.", e)
+            log.warn("Product with id: $id not found in database. Attempting to request it.")
             fetchAndCacheProduct(id)
         }
     }

@@ -1,0 +1,150 @@
+plugins {
+    id 'org.jetbrains.kotlin.jvm' version '1.9.10'
+    id 'org.jetbrains.kotlin.plugin.spring' version '1.9.10'
+    id 'org.springframework.boot' version '3.1.4'
+    id 'io.spring.dependency-management' version '1.1.3'
+    id 'org.openapi.generator' version '7.0.0'
+}
+repositories {
+    mavenCentral()
+}
+dependencyManagement {
+    imports {
+        mavenBom "org.springframework.cloud:spring-cloud-dependencies:2024.0.0"
+    }
+}
+dependencies {
+    implementation project(':application:domain')
+
+    /* spring */
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.cloud:spring-cloud-starter-openfeign'
+//    implementation 'org.springframework.cloud:spring-cloud-starter-openfeign:4.2.0'
+
+    implementation 'io.github.openfeign:feign-core:13.5'
+    implementation 'io.github.openfeign.form:feign-form:3.8.0'
+    implementation 'io.github.openfeign:feign-okhttp:13.5'
+    implementation 'io.github.openfeign:feign-slf4j:13.5'
+    implementation 'io.github.openfeign:feign-jackson:13.5'
+//    implementation 'javax.annotation:javax.annotation-api:1.3.2'
+
+
+    // SLF4J API
+    implementation 'org.slf4j:slf4j-api:2.0.9'
+
+    /* kotlin */
+    implementation 'com.fasterxml.jackson.module:jackson-module-kotlin'
+    implementation 'org.jetbrains.kotlin:kotlin-reflect'
+    implementation 'org.jetbrains.kotlin:kotlin-stdlib-jdk8'
+    implementation 'io.github.microutils:kotlin-logging-jvm:3.0.5'
+
+    /* open-api-generator */
+    compileOnly 'javax.servlet:javax.servlet-api:4.0.1'
+}
+
+//openApiGenerate {
+//    generatorName = "kotlin" // Используем генератор клиента на Kotlin
+//    inputSpec = "$projectDir/src/main/resources/open-api-specs/product-nutrition-v1.yaml" // Путь к спецификации
+//    outputDir = "$buildDir/generated" // Каталог для сгенерированного кода
+//    apiPackage = "com.example.infrastructure.client.productnutrition.api" // Пакет для API-интерфейсов
+//    modelPackage = "com.example.infrastructure.client.productnutrition.models" // Пакет для моделей
+//
+//    configOptions = [
+//        library              : "jvm-ktor", // Используем Ktor клиент
+//        interfaceOnly        : "true", // Генерируем только интерфейсы (без контроллеров)
+//        skipDefaultInterface : "true", // Не генерируем интерфейсы по умолчанию
+//        useBeanValidation    : "false", // Не используем Bean Validation
+//        documentationProvider: "none", // Не генерируем документацию
+//        exceptionHandler     : "false", // Не генерируем обработчики исключений
+//        useTags              : "true" // Разделяем файлы по тегам (опционально)
+//    ]
+//}
+//
+//compileKotlin {
+//    dependsOn "openApiGenerate"
+//}
+//sourceSets {
+//    main {
+//        java {
+//            srcDirs += "$buildDir/generated/src/main/kotlin"
+//        }
+//    }
+//}
+
+openApiGenerate {
+//    https://openapi-generator.tech/docs/generators/java/
+    generatorName = "java" // Use the Java generator
+    inputSpec = "$projectDir/src/main/resources/open-api-specs/product-nutrition-v1.yaml" // Path to the YAML file
+    outputDir = "$buildDir/generated" // Output directory for generated code
+    apiPackage = "com.example.infrastructure.client.productnutrition.api" // Package for API interfaces
+    modelPackage = "com.example.infrastructure.client.productnutrition.models" // Package for models
+    invokerPackage = "com.example.infrastructure.client.productnutrition.invoker" // Package for invoker classes
+
+    configOptions = [
+            useJakartaEe         : "true", // Use Jakarta EE annotations
+            openApiNullable      : "false", // Don't use OpenAPI nullable
+            library              : "feign", // Use Feign client
+            documentationProvider: "none", // Don't generate documentation
+            useTags              : "true" // Separate files by tags (optional)
+    ]
+}
+
+
+//openApiGenerate {
+//    generatorName = "kotlin-spring" // Use the Kotlin Spring generator
+//    inputSpec = "$projectDir/src/main/resources/open-api-specs/product-nutrition-v1.yaml" // Path to the YAML file
+//    outputDir = "$buildDir/generated" // Output directory for generated code
+//    apiPackage = "com.example.infrastructure.server.productnutrition.api" // Package for API interfaces
+//    modelPackage = "com.example.infrastructure.server.productnutrition.models" // Package for models
+//
+//    configOptions = [
+//            interfaceOnly        : "true",    // Generate only interfaces (no controllers)
+//            skipDefaultInterface : "true", // Don't generate default interfaces
+//            useBeanValidation    : "false", // Don't use Bean Validation
+//            documentationProvider: "none", // Don't generate documentation
+//            exceptionHandler     : "false", // Don't generate exception handlers
+////            dateLibrary: "java8",     // Use Java 8 date library
+//            useTags              : "true"           // Separate files by tags (optional)
+//    ]
+//}
+//tasks.register("deleteNonClientRelatedClasses") {
+//    dependsOn("openApiGenerate")
+//    doLast {
+//        var invokerPath = file("${buildDir}/generated/src/main/java/com/example/infrastructure/client/productnutrition/invoker")
+//        if (invokerPath.exists()) {
+//            delete(invokerPath)
+//            println("Deleted folder: $invokerPath")
+//        } else {
+//            println("Folder not found: $invokerPath")
+//        }
+//    }
+//}
+
+//compileJava.dependsOn('deleteNonClientRelatedClasses')
+compileKotlin {
+    dependsOn "openApiGenerate"
+}
+//compileKotlin {
+//    dependsOn "openApiGenerate", "deleteNonClientRelatedClasses"
+//}
+//sourceSets {
+//    main {
+//        java {
+//            srcDirs += "$buildDir/generated/src/main/kotlin"
+//        }
+//    }
+//}
+sourceSets {
+    main {
+        java {
+            srcDirs += "$buildDir/generated/src/main/java"
+        }
+    }
+}
+tasks.named('bootJar').configure {
+    enabled = false
+}
+tasks.test {
+    useJUnitPlatform()
+    failFast = true
+}

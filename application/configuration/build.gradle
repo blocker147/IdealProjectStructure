@@ -12,6 +12,7 @@ dependencies {
     implementation project(':application:features:customers')
     implementation project(':application:features:products')
     implementation project(':application:infrastructure:repository')
+    implementation project(':application:infrastructure:client:product-nutrition')
 
     /* spring */
     implementation 'org.springframework.boot:spring-boot-starter'
