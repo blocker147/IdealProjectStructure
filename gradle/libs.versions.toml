@@ -20,6 +20,7 @@ kotlin-logging = { module = "io.github.microutils:kotlin-logging-jvm", version.r
 jackson-module-kotlin = { module = "com.fasterxml.jackson.module:jackson-module-kotlin", version.ref = "jackson-module-kotlin" }
 # Spring libraries
 spring-boot-starter-web = { module = "org.springframework.boot:spring-boot-starter-web" }                       # version set through spring dependency management
+spring-boot-starter-data-mongodb = { module = "org.springframework.boot:spring-boot-starter-data-mongodb" }     # version set through spring dependency management
 # Open-API generator libraries
 javax-servlet-api = { module = "javax.servlet:javax.servlet-api", version = "4.0.1" }
 # Testing libraries
