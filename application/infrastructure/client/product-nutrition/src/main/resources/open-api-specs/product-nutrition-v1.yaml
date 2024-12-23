@@ -3,6 +3,9 @@ info:
   title: Products API
   description: API for managing products
   version: 1.0.0
+servers:
+  - url: http://localhost:8081
+    description: Local development server
 
 paths:
   /product-nutrition/{product-id}:

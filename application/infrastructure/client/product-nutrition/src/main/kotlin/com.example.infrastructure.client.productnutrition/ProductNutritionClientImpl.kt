@@ -12,11 +12,12 @@ import feign.slf4j.Slf4jLogger
 
 class ProductNutritionClientImpl(
     private val productNutritionMapper: ProductNutritionMapper,
+    private val productNutritionProperties: ProductNutritionProperties,
 ) : ProductNutritionClient {
+    val apiClient = ApiClient()
 
     override fun findById(id: String): ProductNutritionDomain {
-        val apiClient = ApiClient()
-        apiClient.basePath = "http://localhost:8081/product-nutrition"  // must be provided by configuration
+        apiClient.basePath = productNutritionProperties.basePath
         val feignClient = apiClient.feignBuilder
             .client(OkHttpClient()) // perhaps something else can be used
             .logger(Slf4jLogger())  // perhaps something else can be used

@@ -1,16 +1,16 @@
 package com.example.infrastructure.client.productnutrition
 
-import com.example.domain.products.Product as ProductDomain
+import com.example.infrastructure.client.productnutrition.models.ProductNutrition as ProductNutritionClient
+import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.sun.net.httpserver.HttpServer
-import java.io.OutputStream
 import java.net.InetSocketAddress
 
 class SimpleProductNutrition {
 
     fun startServer(port: Int) {
+        val objectMapper = jacksonObjectMapper()
         val server = HttpServer.create(InetSocketAddress(port), 0)
 
-        // Маршрут для получения данных продукта
         server.createContext("/product-nutrition") { exchange ->
             val productId = exchange.requestURI.path.split("/").lastOrNull()
             if (productId == null) {
@@ -19,11 +19,14 @@ class SimpleProductNutrition {
                 return@createContext
             }
 
-//            val product = ProductDomain(productId, "Sample Product", 10) // Пример объекта
-//            val jsonResponse = objectMapper.writeValueAsString(product)
-            val jsonResponse = """
-                {"message":"Hello world!"}
-            """.trimIndent()
+            val productNutrition = ProductNutritionClient()
+                .productId("1")
+                .title("Banana")
+                .proteins(10)
+                .fats(5)
+                .carbohydrates(20)
+                .calories(100)
+            val jsonResponse = objectMapper.writeValueAsString(productNutrition)
 
             exchange.sendResponseHeaders(200, jsonResponse.toByteArray().size.toLong())
             exchange.responseBody.use { it.write(jsonResponse.toByteArray()) }
