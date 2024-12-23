@@ -1,0 +1,31 @@
+# --------------------
+# ----- versions -----
+# --------------------
+[versions]
+# Testing versions
+mockk = "1.13.7"
+kotest = "5.7.2"
+jupiter = "5.10.0"
+
+# --------------------
+# ----- libraries ----
+# --------------------
+[libraries]
+# Kotlin libraries
+kotlin = { module = "org.jetbrains.kotlin:kotlin-stdlib-jdk8" }                                     # version set through kotlin plugin
+kotlin-logging = { module = "io.github.microutils:kotlin-logging-jvm", version = "3.0.5" }
+
+# Testing libraries
+mockk = { module = "io.mockk:mockk", version.ref = "mockk" }
+kotest = { module = "io.kotest:kotest-assertions-core", version.ref = "kotest" }
+jupiter = { module = "org.junit.jupiter:junit-jupiter", version.ref = "jupiter" }
+spring_boot_starter_test = { module = "org.springframework.boot:spring-boot-starter-test" }         # version set through spring dependency management
+
+# --------------------
+# ----- plugins ------
+# --------------------
+[plugins]
+# Kotlin plugins
+kotlin = { id = "org.jetbrains.kotlin.jvm", version = "1.9.10" }
+
+
