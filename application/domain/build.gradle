@@ -5,12 +5,14 @@ repositories {
     mavenCentral()
 }
 dependencies {
+    /* kotlin */
     implementation(libs.kotlin)
     implementation(libs.kotlin.logging)
 
-    testImplementation(libs.mockk)
-    testImplementation(libs.kotest)
+    /* testing */
     testImplementation(libs.jupiter)
+    testImplementation(libs.kotest)
+    testImplementation(libs.mockk)
 }
 tasks.test {
     useJUnitPlatform()
