@@ -1,0 +1,72 @@
+plugins {
+    id 'org.jetbrains.kotlin.jvm' version '1.9.10'
+    id 'org.jetbrains.kotlin.plugin.spring' version '1.9.10'
+    id 'org.springframework.boot' version '3.1.4'
+    id 'io.spring.dependency-management' version '1.1.3'
+    id 'org.openapi.generator' version '7.0.0'
+}
+repositories {
+    mavenCentral()
+}
+dependencies {
+    implementation project(':application:domain')
+    implementation project(':application:properties')
+
+    /* spring */
+    implementation 'org.springframework.boot:spring-boot-starter'
+
+    /* feign */
+    implementation 'io.github.openfeign:feign-core:13.5'
+    implementation 'io.github.openfeign.form:feign-form:3.8.0'
+    implementation 'io.github.openfeign:feign-okhttp:13.5'
+    implementation 'io.github.openfeign:feign-slf4j:13.5'
+    implementation 'io.github.openfeign:feign-jackson:13.5'
+    implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.15.2'
+
+    /* kotlin */
+    implementation 'com.fasterxml.jackson.module:jackson-module-kotlin'
+    implementation 'org.jetbrains.kotlin:kotlin-reflect'
+    implementation 'org.jetbrains.kotlin:kotlin-stdlib-jdk8'
+    implementation 'io.github.microutils:kotlin-logging-jvm:3.0.5'
+
+    testImplementation("io.kotest:kotest-assertions-core:5.7.2")
+    testImplementation("org.junit.jupiter:junit-jupiter:5.10.0")
+    testImplementation("org.wiremock:wiremock:3.10.0")
+}
+openApiGenerate {
+//    https://openapi-generator.tech/docs/generators/java/
+    generatorName = "java" // Use the Java generator
+//    inputSpec = "$rootDir/application/properties/src/main/resources/open-api-specs2/product-nutrition-v1.yaml"
+    inputSpec = "$projectDir/src/main/resources/open-api-specs/product-nutrition-v1.yaml" // Path to the YAML file
+    outputDir = "$buildDir/generated" // Output directory for generated code
+    apiPackage = "com.example.infrastructure.client.productnutrition.api" // Package for API interfaces
+    modelPackage = "com.example.infrastructure.client.productnutrition.models" // Package for models
+    invokerPackage = "com.example.infrastructure.client.productnutrition.invoker" // Package for invoker classes
+
+    configOptions = [
+            generateConstructorWithAllArgs: "true", // Generate constructors with all arguments
+            generateBuilders              : "true", // Generate builder classes
+            useJakartaEe                  : "true", // Use Jakarta EE annotations
+            openApiNullable               : "false", // Don't use OpenAPI nullable
+            library                       : "feign", // Use Feign client
+            documentationProvider         : "none", // Don't generate documentation
+            useTags                       : "true" // Separate files by tags (optional)
+    ]
+}
+compileKotlin {
+    dependsOn "openApiGenerate"
+}
+sourceSets {
+    main {
+        java {
+            srcDirs += "$buildDir/generated/src/main/java"
+        }
+    }
+}
+tasks.named('bootJar').configure {
+    enabled = false
+}
+tasks.test {
+    useJUnitPlatform()
+    failFast = true
+}

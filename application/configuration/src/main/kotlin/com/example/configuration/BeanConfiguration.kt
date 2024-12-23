@@ -3,14 +3,13 @@ package com.example.configuration
 import com.example.domain.customers.CustomerRepository
 import com.example.domain.customers.CustomerService
 import com.example.domain.customers.CustomerServiceImpl
-import com.example.domain.products.ProductRepository
-import com.example.domain.products.ProductService
-import com.example.domain.products.ProductServiceImpl
-import com.example.domain.products.ProductValidator
-import com.example.domain.products.ProductValidatorImpl
+import com.example.domain.products.*
 import com.example.features.products.usecase.ProductMapper
 import com.example.features.products.usecase.ProductUseCaseImpl
 import com.example.features.products.usecase.ProductsUseCase
+import com.example.infrastructure.client.productnutrition.ProductNutritionClientImpl
+import com.example.infrastructure.client.productnutrition.ProductNutritionMapper
+import com.example.infrastructure.client.productnutrition.ProductNutritionProperties
 import com.example.infrastructure.inmemory.InMemoryCustomerRepository
 import com.example.infrastructure.mongo.ProductDao
 import com.example.infrastructure.mongo.ProductRepositoryImpl
@@ -23,9 +22,18 @@ class BeanConfiguration {
     @Bean
     fun productService(
         productValidator: ProductValidator,
-        productRepository: ProductRepository
+        productRepository: ProductRepository,
+        productNutritionClient: ProductNutritionClient,
     ): ProductService {
-        return ProductServiceImpl(productValidator, productRepository)
+        return ProductServiceImpl(productValidator, productRepository, productNutritionClient)
+    }
+
+    @Bean
+    fun productNutritionClient(
+        productNutritionMapper: ProductNutritionMapper,
+        productNutritionProperties: ProductNutritionProperties,
+    ): ProductNutritionClient {
+        return ProductNutritionClientImpl(productNutritionMapper, productNutritionProperties)
     }
 
     @Bean

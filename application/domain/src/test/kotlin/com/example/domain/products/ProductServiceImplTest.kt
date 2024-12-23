@@ -8,11 +8,13 @@ import org.junit.jupiter.api.Test
 
 class ProductServiceImplTest {
     private val productValidatorMock: ProductValidator = mockk()
+    private val productNutritionClientMock: ProductNutritionClient = mockk()
     private val productRepositoryFake = ProductRepositoryFake
 
     private val target: ProductService = ProductServiceImpl(
         productValidatorMock,
-        productRepositoryFake
+        productRepositoryFake,
+        productNutritionClientMock,
     )
 
     @BeforeEach
@@ -32,10 +34,31 @@ class ProductServiceImplTest {
     }
 
     @Test
-    fun `when product doesn't exist - then throw an exception`() {
-        val exception = shouldThrow<IndexOutOfBoundsException> { target.getProductById("-1") }
+    fun `when product doesn't exist neither in DB nor in external service - then throw an exception`() {
+        val productId = "-1"
+        every { productNutritionClientMock.findById(productId) } throws RuntimeException("No such product with id: $productId. Neither in DB nor in external service.")
 
-        exception.message shouldBe "No such product with id: -1"
+        val exception = shouldThrow<IllegalStateException> { target.getProductById(productId) }
+
+        exception.message shouldBe "No such product with id: $productId. Neither in DB nor in external service."
+    }
+
+    @Test
+    fun `when product doesn't exist in DB try to request and cache it and - then return product`() {
+        val productId = "1"
+        val productNutrition = ProductFactory.createProductNutrition()
+        val expected = Product(
+            id = "1",
+            title = "Random title",
+            count = 100,
+            nutrition = productNutrition,
+        )
+        every { productNutritionClientMock.findById(productId) } returns productNutrition
+
+        val actual = target.getProductById(productId)
+
+        verify { productNutritionClientMock.findById(productId) }
+        actual shouldBe expected
     }
 
     @Test
