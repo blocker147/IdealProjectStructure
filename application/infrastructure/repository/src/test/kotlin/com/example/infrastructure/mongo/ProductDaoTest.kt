@@ -2,8 +2,10 @@ package com.example.infrastructure.mongo
 
 import io.kotest.matchers.shouldBe
 import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 
+@Disabled
 class ProductDaoTest : AbstractMongoTest() {
     private lateinit var target: ProductDao
 

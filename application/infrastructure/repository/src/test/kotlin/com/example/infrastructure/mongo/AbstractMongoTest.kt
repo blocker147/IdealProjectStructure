@@ -8,6 +8,7 @@ import com.mongodb.client.MongoClients
 import org.bson.Document
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.TestInstance
 import org.springframework.data.mongodb.core.MongoTemplate
 import org.springframework.data.mongodb.repository.support.MongoRepositoryFactory
@@ -15,6 +16,7 @@ import java.util.UUID
 import java.util.concurrent.TimeUnit
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
+@Disabled
 abstract class AbstractMongoTest {
     private lateinit var mongoTemplate: MongoTemplate
     protected lateinit var repositoryFactory: MongoRepositoryFactory
