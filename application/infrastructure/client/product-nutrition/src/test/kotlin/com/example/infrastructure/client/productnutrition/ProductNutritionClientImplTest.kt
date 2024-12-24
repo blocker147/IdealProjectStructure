@@ -1,17 +1,10 @@
 package com.example.infrastructure.client.productnutrition
 
+import com.github.tomakehurst.wiremock.client.WireMock.*
+import io.kotest.matchers.shouldBe
+import org.junit.jupiter.api.Test
 import com.example.domain.products.ProductNutrition as ProductNutritionDomain
 import com.example.infrastructure.client.productnutrition.models.ProductNutrition as ProductNutritionClient
-import com.github.tomakehurst.wiremock.WireMockServer
-import com.github.tomakehurst.wiremock.client.WireMock.stubFor
-import com.github.tomakehurst.wiremock.client.WireMock.get
-import com.github.tomakehurst.wiremock.client.WireMock.aResponse
-import com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo
-import io.kotest.matchers.shouldBe
-import org.junit.jupiter.api.BeforeAll
-import org.junit.jupiter.api.Disabled
-import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.TestInstance
 
 class ProductNutritionClientImplTest : AbstractWireMockServerTest() {
     private val target = ProductNutritionClientImpl(

@@ -1,20 +1,19 @@
 plugins {
-    id 'org.jetbrains.kotlin.jvm' version '1.9.10'
+    alias(libs.plugins.kotlin)
 }
-
 repositories {
     mavenCentral()
 }
-
 dependencies {
-    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
-    implementation 'io.github.microutils:kotlin-logging-jvm:3.0.5'
+    /* kotlin */
+    implementation(libs.kotlin)
+    implementation(libs.kotlin.logging)
 
-    testImplementation("io.mockk:mockk:1.13.7")
-    testImplementation("io.kotest:kotest-assertions-core:5.7.2")
-    testImplementation("org.junit.jupiter:junit-jupiter:5.10.0")
+    /* testing */
+    testImplementation(libs.jupiter)
+    testImplementation(libs.kotest)
+    testImplementation(libs.mockk)
 }
-
 tasks.test {
     useJUnitPlatform()
 }
