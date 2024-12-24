@@ -5,12 +5,10 @@ import com.example.domain.products.ProductRepository
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.shouldNotBe
 import org.junit.jupiter.api.BeforeEach
-import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import java.time.Clock
 import java.time.Instant
 
-@Disabled
 class ProductRepositoryTest : AbstractMongoTest() {
     private val clockFake = Clock.fixed(
         Instant.parse("1997-01-01T00:00:00Z"),
