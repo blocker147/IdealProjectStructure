@@ -1,45 +1,59 @@
-# ------------------------------------------------------------
-# ------------------------ versions --------------------------
-# ------------------------------------------------------------
+# ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+# ------------------------------------------------------------------------ versions --------------------------------------------------------------------------------------------------
+# ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 [versions]
-# Kotlin libraries versions
-kotlin-logging = "3.0.5"
-jackson-module-kotlin = "2.13.0"
-# Testing liraries versions
-mockk = "1.13.7"
-kotest = "5.7.2"
-jupiter = "5.10.0"
+# --- Kotlin libraries versions ---
+kotlin-logging              = "3.0.5"
+jackson-module-kotlin       = "2.13.0"
+# --- Feign libraries versions ---
+feign-core                  = "13.5"
+feign-form                  = "3.8.0"
+# --- Open-API generator libraries versions ---
+jackson-datatype-jsr310     = "2.15.2"
+javax-servlet-api           = "4.0.1"
+# --- Testing liraries versions ---
+jupiter                     = "5.10.0"
+kotest                      = "5.7.2"
+mockk                       = "1.13.7"
+wiremock                    = "3.10.0"
 
-# ------------------------------------------------------------
-# ------------------------ libraries -------------------------
-# ------------------------------------------------------------
+# ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+# ------------------------------------------------------------------------ libraries -------------------------------------------------------------------------------------------------
+# ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 [libraries]
-# Kotlin libraries
-kotlin = { module = "org.jetbrains.kotlin:kotlin-stdlib-jdk8" }                                                 # version set through kotlin plugin
-kotlin-logging = { module = "io.github.microutils:kotlin-logging-jvm", version.ref = "kotlin-logging" }
-jackson-module-kotlin = { module = "com.fasterxml.jackson.module:jackson-module-kotlin", version.ref = "jackson-module-kotlin" }
-# Spring libraries
-spring-boot-starter-web = { module = "org.springframework.boot:spring-boot-starter-web" }                       # version set through spring dependency management
-spring-boot-starter-data-mongodb = { module = "org.springframework.boot:spring-boot-starter-data-mongodb" }     # version set through spring dependency management
-# Open-API generator libraries
-javax-servlet-api = { module = "javax.servlet:javax.servlet-api", version = "4.0.1" }
-# Testing libraries
-mockk = { module = "io.mockk:mockk", version.ref = "mockk" }
-kotest = { module = "io.kotest:kotest-assertions-core", version.ref = "kotest" }
-jupiter = { module = "org.junit.jupiter:junit-jupiter", version.ref = "jupiter" }
-spring-boot-starter-test = { module = "org.springframework.boot:spring-boot-starter-test" }                     # version set through spring dependency management
+# --- Kotlin libraries ---
+kotlin                              = { module = "org.jetbrains.kotlin:kotlin-stdlib-jdk8" }                        # version set through kotlin plugin
+kotlin-logging                      = { module = "io.github.microutils:kotlin-logging-jvm",                         version.ref = "kotlin-logging" }
+jackson-module-kotlin               = { module = "com.fasterxml.jackson.module:jackson-module-kotlin",              version.ref = "jackson-module-kotlin" }
+# --- Spring libraries ---
+spring-boot-starter                 = { module = "org.springframework.boot:spring-boot-starter" }                   # version set through spring dependency management
+spring-boot-starter-web             = { module = "org.springframework.boot:spring-boot-starter-web" }               # version set through spring dependency management
+spring-boot-starter-data-mongodb    = { module = "org.springframework.boot:spring-boot-starter-data-mongodb" }      # version set through spring dependency management
+# --- Feign libraries ---
+feign-core                          = { module = "io.github.openfeign:feign-core",                                  version.ref = "feign-core" }
+feign-slf4j                         = { module = "io.github.openfeign:feign-slf4j",                                 version.ref = "feign-core" }
+feign-okhttp                        = { module = "io.github.openfeign:feign-okhttp",                                version.ref = "feign-core" }
+feign-jackson                       = { module = "io.github.openfeign:feign-jackson",                               version.ref = "feign-core" }
+feign-form                          = { module = "io.github.openfeign.form:feign-form",                             version.ref = "feign-form" }
+# --- Open-API generator libraries ---
+javax-servlet-api                   = { module = "javax.servlet:javax.servlet-api",                                 version.ref = "javax-servlet-api" }
+jackson-datatype-jsr310             = { module = "com.fasterxml.jackson.datatype:jackson-datatype-jsr310",          version.ref = "jackson-datatype-jsr310" }
+# --- Testing libraries ---
+jupiter                             = { module = "org.junit.jupiter:junit-jupiter",                                 version.ref = "jupiter" }
+kotest                              = { module = "io.kotest:kotest-assertions-core",                                version.ref = "kotest" }
+mockk                               = { module = "io.mockk:mockk",                                                  version.ref = "mockk" }
+wiremock                            = { module = "org.wiremock:wiremock",                                           version.ref = "wiremock" }
+spring-boot-starter-test            = { module = "org.springframework.boot:spring-boot-starter-test" }              # version set through spring dependency management
 
-# ------------------------------------------------------------
-# ------------------------ plugins ---------------------------
-# ------------------------------------------------------------
+# ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+# ------------------------------------------------------------------------ plugins ---------------------------------------------------------------------------------------------------
+# ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 [plugins]
-# Kotlin plugins
-kotlin = { id = "org.jetbrains.kotlin.jvm", version = "1.9.10" }
-kotlin-spring = { id = "org.jetbrains.kotlin.plugin.spring", version = "1.9.10" }
-# Spring plugins
-spring-boot = { id = "org.springframework.boot", version = "3.1.4" }
-spring-dependency-management = { id = "io.spring.dependency-management", version = "1.1.3" }
-# Open-API generator plugins
-openapi-generator = { id = "org.openapi.generator", version = "7.0.0" }
-
-
+# --- Kotlin plugins ---
+kotlin                              = { id = "org.jetbrains.kotlin.jvm",                version = "1.9.10" }
+kotlin-spring                       = { id = "org.jetbrains.kotlin.plugin.spring",      version = "1.9.10" }
+# --- Spring plugins ---
+spring-boot                         = { id = "org.springframework.boot",                version = "3.1.4" }
+spring-dependency-management        = { id = "io.spring.dependency-management",         version = "1.1.3" }
+# --- Open-API generator plugins ---
+openapi-generator                   = { id = "org.openapi.generator",                   version = "7.0.0" }
