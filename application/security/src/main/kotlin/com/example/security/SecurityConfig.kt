@@ -11,23 +11,19 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @Configuration
 @EnableWebSecurity
 class SecurityConfig(
-    private val jwtTokenFilter: JwtTokenFilter,
+    private val jwtFilter: JwtFilter
 ) {
+
     @Bean
     fun securityFilterChain(http: HttpSecurity): SecurityFilterChain {
         http
             .csrf { it.disable() }
             .authorizeHttpRequests { it
-                .requestMatchers("/").permitAll()
+                .requestMatchers("/auth-with-github", "/login/oauth2/code/github").permitAll()
                 .anyRequest().authenticated()
             }
-            .oauth2Login { it
-//                .successHandler(customAuthenticationSuccessHandler)
-                .defaultSuccessUrl("/home", true)
-            }
-//            .addFilterBefore(oauth2AuthorizationFilter, UsernamePasswordAuthenticationFilter::class.java)
-            .addFilterBefore(jwtTokenFilter, UsernamePasswordAuthenticationFilter::class.java)
-//            .sessionManagement { it.sessionCreationPolicy(SessionCreationPolicy.STATELESS) }
+            .sessionManagement { it.sessionCreationPolicy(SessionCreationPolicy.STATELESS) }
+            .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter::class.java)
 
         return http.build()
     }
