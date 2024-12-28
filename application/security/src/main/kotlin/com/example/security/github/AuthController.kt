@@ -1,7 +1,6 @@
-package com.example.security
+package com.example.security.github
 
-import org.springframework.beans.factory.annotation.Value
-import org.springframework.security.core.Authentication
+import com.example.security.jwt.JwtUtil
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
@@ -10,14 +9,10 @@ import org.springframework.web.servlet.view.RedirectView
 @RestController
 class AuthController(
     private val gitHubOAuthService: GitHubOAuthService,
-    @Value("\${my-client-id}") private val clientId: String,
 ) {
-    private val redirectUri = "http://localhost:8080/login/oauth2/code/github"
-    private val githubAuthUrl = "https://github.com/login/oauth/authorize"
-
     @GetMapping("/auth-with-github")
     fun startOAuth(): RedirectView {
-        val url = "$githubAuthUrl?client_id=$clientId&redirect_uri=$redirectUri&scope=read:user"
+        val url = gitHubOAuthService.redirectUrl()
         return RedirectView(url)
     }
 
@@ -31,10 +26,5 @@ class AuthController(
             "username" to user["login"],
             "jwt" to jwtToken
         )
-    }
-
-    @GetMapping("/jwt-secured")
-    fun jwtSecured(authentication: Authentication): String {
-        return "This is a secured endpoint"
     }
 }

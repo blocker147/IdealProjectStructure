@@ -1,13 +1,11 @@
-package com.example.security
+package com.example.security.jwt
 
 import jakarta.servlet.FilterChain
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
 import org.springframework.security.core.context.SecurityContextHolder
-import org.springframework.security.web.authentication.WebAuthenticationDetailsSource
 import org.springframework.stereotype.Component
 import org.springframework.web.filter.OncePerRequestFilter
-import io.jsonwebtoken.Claims
 import org.springframework.security.core.AuthenticationException
 
 @Component
@@ -31,8 +29,8 @@ class JwtFilter(
         if (authHeader != null && authHeader.startsWith("Bearer ")) {
             val token = authHeader.substring(7)
 
-            // if token is null or invalid redirect to
-            // /auth-with-github
+            // todo: if token is null or invalid redirect to
+            //  /auth-with-github in case of automatic OAuth2 need to think how
 
             val authRequest = JwtAuthenticationToken(token)
 

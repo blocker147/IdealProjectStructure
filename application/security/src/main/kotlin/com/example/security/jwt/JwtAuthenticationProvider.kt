@@ -1,4 +1,4 @@
-package com.example.security
+package com.example.security.jwt
 
 import org.springframework.security.authentication.AuthenticationProvider
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
@@ -7,7 +7,6 @@ import org.springframework.stereotype.Component
 
 @Component
 class JwtAuthenticationProvider : AuthenticationProvider {
-
     override fun authenticate(authentication: Authentication): Authentication {
         val token = authentication.credentials as String
         val username = JwtUtil.getUsernameFromToken(token)
