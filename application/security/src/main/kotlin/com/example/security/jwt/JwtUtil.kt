@@ -1,7 +1,6 @@
 package com.example.security.jwt
 
 import io.jsonwebtoken.Jwts
-import io.jsonwebtoken.Claims
 import io.jsonwebtoken.security.Keys
 import java.util.*
 
@@ -21,12 +20,13 @@ object JwtUtil {
             .compact()
     }
 
-    fun validateToken(token: String): Claims {
+    fun validateToken(token: String): Boolean {
         val claims = Jwts.parser()
             .verifyWith(SECRET_KEY)
             .build()
             .parseSignedClaims(token)
-        return claims.payload
+        val expiration = claims.payload.expiration
+        return !expiration.before(Date())
     }
 
     fun getUsernameFromToken(token: String): String {

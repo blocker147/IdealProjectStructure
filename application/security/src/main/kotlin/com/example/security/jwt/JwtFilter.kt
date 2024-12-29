@@ -6,7 +6,6 @@ import jakarta.servlet.http.HttpServletResponse
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.stereotype.Component
 import org.springframework.web.filter.OncePerRequestFilter
-import org.springframework.security.core.AuthenticationException
 
 @Component
 class JwtFilter(
@@ -15,8 +14,8 @@ class JwtFilter(
 
     override fun shouldNotFilter(request: HttpServletRequest): Boolean {
         val path = request.requestURI
-        if (path == "/auth-with-github") return true
-        if (path == "/login/oauth2/code/github") return true
+        // todo: limit URL to filter
+        if (path == "/") return true
         return super.shouldNotFilter(request)
     }
 
@@ -25,43 +24,68 @@ class JwtFilter(
         response: HttpServletResponse,
         filterChain: FilterChain
     ) {
-        val authHeader = request.getHeader("Authorization")
-        if (authHeader != null && authHeader.startsWith("Bearer ")) {
-            val token = authHeader.substring(7)
+        try {
+            checkJwtInHeader(request, filterChain, response)
+            checkJwtInCookie(request, filterChain, response)
+        } catch (e: Exception) {
+            response.status = HttpServletResponse.SC_INTERNAL_SERVER_ERROR
+            response.writer.write("Something went wrong during JWT check")
+            return
+        }
+    }
 
-            // todo: if token is null or invalid redirect to
-            //  /auth-with-github in case of automatic OAuth2 need to think how
+    private fun checkJwtInHeader(
+        request: HttpServletRequest,
+        filterChain: FilterChain,
+        response: HttpServletResponse
+    ) {
+        request.getHeader("Authorization")?.let {
+            if (it.startsWith("Bearer ")) {
+                val token = it.substring(7)
 
-            val authRequest = JwtAuthenticationToken(token)
-
-            try {
-                val authResult = authenticationManager.authenticate(authRequest)
-                SecurityContextHolder.getContext().authentication = authResult
-            } catch (ex: AuthenticationException) {
-                response.status = HttpServletResponse.SC_UNAUTHORIZED
-                response.writer.write("Unauthorized: ${ex.message}")
-                return
+                if (JwtUtil.validateToken(token)) {
+                    authenticateUser(token, filterChain, request, response)
+                } else {
+                    response.status = HttpServletResponse.SC_UNAUTHORIZED
+                    response.writer.write("Unauthorized: JWT token from Header is invalid")
+                    return
+                }
             }
         }
+    }
 
-//        val authorizationHeader = request.getHeader("Authorization")
-//
-//        if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
-//            val token = authorizationHeader.substring(7)
-//            try {
-//                val claims: Claims = JwtUtil.validateToken(token)
-//                val username = claims.subject
-//
-//                if (username != null) {
-//                    val authentication = JwtAuthenticationToken(username)
-//                    authentication.details = WebAuthenticationDetailsSource().buildDetails(request)
-//                    SecurityContextHolder.getContext().authentication = authentication
-//                }
-//            } catch (e: Exception) {
-//                response.status = HttpServletResponse.SC_UNAUTHORIZED
-//                return
-//            }
-//        }
+    private fun checkJwtInCookie(
+        request: HttpServletRequest,
+        filterChain: FilterChain,
+        response: HttpServletResponse
+    ) {
+        val cookies = request.cookies
+        if (cookies != null && cookies.isNotEmpty() && cookies.map { it.name }.contains("jwt-token")) {
+            val token = cookies.first { it.name == "jwt-token" }.value
+
+            if (JwtUtil.validateToken(token)) {
+                authenticateUser(token, filterChain, request, response)
+            } else {
+                response.status = HttpServletResponse.SC_UNAUTHORIZED
+                response.writer.write("Unauthorized: JWT token from Cookies is invalid")
+                return
+            }
+
+        } else {
+            doFilter(request, response, filterChain)
+        }
+    }
+
+    private fun authenticateUser(
+        token: String,
+        filterChain: FilterChain,
+        request: HttpServletRequest,
+        response: HttpServletResponse
+    ) {
+        val authRequest = JwtAuthenticationToken(token)
+        val authResult = authenticationManager.authenticate(authRequest)
+        SecurityContextHolder.getContext().authentication = authResult
+        response.addHeader("Authorization", "Bearer $token")
         filterChain.doFilter(request, response)
     }
 }

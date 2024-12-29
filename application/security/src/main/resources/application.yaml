@@ -1,6 +1,27 @@
 logging:
   level:
-    org.springframework.security: INFO
+    org.springframework.security: TRACE
 
-my-client-id: Ov23liJNqojO4CIUlyCT
-my-client-secret: cff0144475487aa5b3c8ab9f2454cbdbcbc3c4af
+springdoc:
+  api-docs:
+    path: /custom-api-docs
+  swagger-ui:
+    path: /custom-swagger-ui
+
+spring:
+  security:
+    oauth2:
+      client:
+        registration:
+          github:
+            client-id: Ov23liJNqojO4CIUlyCT
+            client-secret: cff0144475487aa5b3c8ab9f2454cbdbcbc3c4af
+            scope: read:user
+            redirect-uri: "{baseUrl}/login/oauth2/code/github"
+            authorization-grant-type: authorization_code
+            client-name: GitHub
+        provider:
+          github:
+            authorization-uri: https://github.com/login/oauth/authorize
+            token-uri: https://github.com/login/oauth/access_token
+            user-info-uri: https://api.github.com/user
