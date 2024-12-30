@@ -26,3 +26,5 @@
 # Improvements
 - Code Quality (KtLint)
 - Code Coverage (JaCoCo)
+- Admin UI
+- 

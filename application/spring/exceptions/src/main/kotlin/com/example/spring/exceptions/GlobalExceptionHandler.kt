@@ -1,4 +1,4 @@
-package com.example.configuration
+package com.example.spring.exceptions
 
 import mu.KotlinLogging
 import org.springframework.context.annotation.Configuration

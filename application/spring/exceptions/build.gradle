@@ -8,16 +8,7 @@ repositories {
     mavenCentral()
 }
 dependencies {
-    implementation project(':application:domain')
-    implementation project(':application:features:customers')
-    implementation project(':application:features:products')
-    implementation project(':application:infrastructure:repository')
-    implementation project(':application:infrastructure:client:product-nutrition')
-    implementation project(':application:spring:security')
-    implementation project(':application:spring:exceptions')
-
     /* spring */
-    implementation 'org.springframework.boot:spring-boot-starter'
     implementation 'org.springframework.boot:spring-boot-starter-web'
 
     /* kotlin */
@@ -25,7 +16,4 @@ dependencies {
     implementation 'org.jetbrains.kotlin:kotlin-reflect'
     implementation 'org.jetbrains.kotlin:kotlin-stdlib-jdk8'
     implementation 'io.github.microutils:kotlin-logging-jvm:3.0.5'
-}
-bootJar {
-    mainClass = 'com.example.ApplicationKt'
 }
