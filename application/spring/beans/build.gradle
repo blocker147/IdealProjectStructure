@@ -16,6 +16,7 @@ dependencies {
     implementation project(':application:spring:security')
     implementation project(':application:spring:exceptions')
     implementation project(':application:spring:swagger')
+    implementation project(':application:spring:admin-ui')
 
     /* spring */
     implementation 'org.springframework.boot:spring-boot-starter'
