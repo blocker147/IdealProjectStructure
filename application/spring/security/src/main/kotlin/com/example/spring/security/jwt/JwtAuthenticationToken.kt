@@ -1,4 +1,4 @@
-package com.example.security.jwt
+package com.example.spring.security.jwt
 
 import org.springframework.security.authentication.AbstractAuthenticationToken
 

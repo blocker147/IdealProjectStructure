@@ -1,7 +1,7 @@
-package com.example.security.config
+package com.example.spring.security.config
 
-import com.example.security.jwt.JwtFilter
-import com.example.security.jwt.JwtUtil
+import com.example.spring.security.jwt.JwtFilter
+import com.example.spring.security.jwt.JwtUtil
 import jakarta.servlet.http.Cookie
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse

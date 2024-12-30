@@ -1,4 +1,4 @@
-package com.example.security.controller
+package com.example.spring.security.controller
 
 import org.springframework.security.core.Authentication
 import org.springframework.web.bind.annotation.GetMapping

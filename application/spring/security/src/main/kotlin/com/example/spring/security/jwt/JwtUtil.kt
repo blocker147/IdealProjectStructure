@@ -1,4 +1,4 @@
-package com.example.security.jwt
+package com.example.spring.security.jwt
 
 import io.jsonwebtoken.Jwts
 import io.jsonwebtoken.security.Keys
