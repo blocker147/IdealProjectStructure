@@ -2,12 +2,15 @@ package com.example.security.jwt
 
 import io.jsonwebtoken.Jwts
 import io.jsonwebtoken.security.Keys
+import org.springframework.beans.factory.annotation.Value
+import org.springframework.stereotype.Component
 import java.util.*
 
-object JwtUtil {
-    private val SECRET_KEY = Keys
-        .hmacShaKeyFor("UWpXQZHDcogtSJV1oZhG4On5xn4rmCcLp3Qp5nwFKh79kRYg38St7yvSyBCfdaMrIeNWK5bwHmblRehRGAvg9nTXIVL7W0AHQhlrheV3EGpzZiaifnifIKeyr8ZyvCqjzVzUFnZMb79uIlHp82DoMUR867cVuHRv7qlpXdPcVDrB0dRQ1IIuQYhIJLRQ3IFkmfgInIITczZRsTceHu0OhzTSmicLL9CSRPfZvpEsPO4Zta5Ewf2dot3Dh5WrHawF".toByteArray())
-
+@Component
+class JwtUtil(
+    @Value("\${jwt.signing-secret-key}") private val jwtSigningKey: String
+) {
+    private val secretKey = Keys.hmacShaKeyFor(jwtSigningKey.toByteArray())
 
     fun generateToken(username: String): String {
         val claims: Map<String, Any> = mapOf("username" to username)
@@ -16,13 +19,13 @@ object JwtUtil {
             .subject(username)
             .issuedAt(Date())
             .expiration(Date(System.currentTimeMillis() + 1000 * 60 * 60))
-            .signWith(SECRET_KEY)
+            .signWith(secretKey)
             .compact()
     }
 
     fun validateToken(token: String): Boolean {
         val claims = Jwts.parser()
-            .verifyWith(SECRET_KEY)
+            .verifyWith(secretKey)
             .build()
             .parseSignedClaims(token)
         val expiration = claims.payload.expiration
@@ -31,7 +34,7 @@ object JwtUtil {
 
     fun getUsernameFromToken(token: String): String {
         val claims = Jwts.parser()
-            .verifyWith(SECRET_KEY)
+            .verifyWith(secretKey)
             .build()
             .parseSignedClaims(token)
             .payload
@@ -40,7 +43,7 @@ object JwtUtil {
 
     fun getRolesFromToken(token: String): List<String> {
         val claims = Jwts.parser()
-            .verifyWith(SECRET_KEY)
+            .verifyWith(secretKey)
             .build()
             .parseSignedClaims(token)
             .payload

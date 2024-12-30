@@ -22,7 +22,7 @@ import org.springframework.stereotype.Component
 @EnableWebSecurity
 class SecurityConfig(
     private val jwtFilter: JwtFilter,
-    private val successHandler: CustomAuthenticationSuccessHandler
+    private val successHandler: AuthenticationSuccessHandler,
 ) {
 
     @Bean
@@ -47,7 +47,9 @@ class SecurityConfig(
 }
 
 @Component
-class CustomAuthenticationSuccessHandler : AuthenticationSuccessHandler {
+class CustomAuthenticationSuccessHandler(
+    private val jwtUtil: JwtUtil,
+) : AuthenticationSuccessHandler {
     private val redirectStrategy: RedirectStrategy = DefaultRedirectStrategy()
 
     override fun onAuthenticationSuccess(
@@ -56,7 +58,7 @@ class CustomAuthenticationSuccessHandler : AuthenticationSuccessHandler {
         authentication: Authentication
     ) {
         val username = authentication.name
-        val token = JwtUtil.generateToken(username)
+        val token = jwtUtil.generateToken(username)
 
         response.addCookie(Cookie("jwt-token", token).apply {
             isHttpOnly = true

@@ -10,6 +10,7 @@ import org.springframework.web.filter.OncePerRequestFilter
 @Component
 class JwtFilter(
     private val authenticationManager: JwtAuthenticationProvider,
+    private val jwtUtil: JwtUtil,
 ) : OncePerRequestFilter() {
 
     override fun shouldNotFilter(request: HttpServletRequest): Boolean {
@@ -43,7 +44,7 @@ class JwtFilter(
             if (it.startsWith("Bearer ")) {
                 val token = it.substring(7)
 
-                if (JwtUtil.validateToken(token)) {
+                if (jwtUtil.validateToken(token)) {
                     authenticateUser(token, filterChain, request, response)
                 } else {
                     response.status = HttpServletResponse.SC_UNAUTHORIZED
@@ -63,7 +64,7 @@ class JwtFilter(
         if (cookies != null && cookies.isNotEmpty() && cookies.map { it.name }.contains("jwt-token")) {
             val token = cookies.first { it.name == "jwt-token" }.value
 
-            if (JwtUtil.validateToken(token)) {
+            if (jwtUtil.validateToken(token)) {
                 authenticateUser(token, filterChain, request, response)
             } else {
                 response.status = HttpServletResponse.SC_UNAUTHORIZED

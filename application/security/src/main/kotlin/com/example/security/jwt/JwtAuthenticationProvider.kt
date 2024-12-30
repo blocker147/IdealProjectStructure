@@ -6,10 +6,12 @@ import org.springframework.security.core.Authentication
 import org.springframework.stereotype.Component
 
 @Component
-class JwtAuthenticationProvider : AuthenticationProvider {
+class JwtAuthenticationProvider(
+    private val jwtUtil: JwtUtil,
+) : AuthenticationProvider {
     override fun authenticate(authentication: Authentication): Authentication {
         val token = authentication.credentials as String
-        val username = JwtUtil.getUsernameFromToken(token)
+        val username = jwtUtil.getUsernameFromToken(token)
         return UsernamePasswordAuthenticationToken(username, null, emptyList())
     }
 
