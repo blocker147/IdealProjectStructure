@@ -9,7 +9,7 @@ import org.junit.jupiter.api.Test
 import java.time.Clock
 import java.time.Instant
 
-class ProductRepositoryTest : AbstractMongoTest() {
+class ProductRepositoryImplTest : AbstractMongoTest() {
     private val clockFake = Clock.fixed(
         Instant.parse("1997-01-01T00:00:00Z"),
         Clock.systemUTC().zone

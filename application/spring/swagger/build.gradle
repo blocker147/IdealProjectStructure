@@ -1,0 +1,15 @@
+plugins {
+    alias(libs.plugins.kotlin)
+    alias(libs.plugins.kotlin.spring)
+    alias(libs.plugins.spring.boot)
+    alias(libs.plugins.spring.dependency.management)
+}
+repositories {
+    mavenCentral()
+}
+dependencies {
+    implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.2.0")
+}
+tasks.named('bootJar').configure {
+    enabled = false
+}

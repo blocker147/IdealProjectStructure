@@ -1,0 +1,16 @@
+plugins {
+    alias(libs.plugins.kotlin)
+    alias(libs.plugins.kotlin.spring)
+    alias(libs.plugins.spring.boot)
+    alias(libs.plugins.spring.dependency.management)
+}
+repositories {
+    mavenCentral()
+}
+dependencies {
+    implementation(libs.spring.boot.starter.web)
+    implementation("org.springframework.boot:spring-boot-starter-thymeleaf")
+}
+tasks.named('bootJar').configure {
+    enabled = false
+}
