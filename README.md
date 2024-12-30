@@ -1,3 +1,7 @@
+# Priorities:
+- BackEnd requests aren't giving any meaningful responses or logs 
+when it comes to security issues
+
 # Optimization
 - Logging
 - Monitoring
@@ -27,4 +31,5 @@
 - Code Quality (KtLint)
 - Code Coverage (JaCoCo)
 - Admin UI
-- 
+- fix dependencies in build.gradle
+- API versioning
