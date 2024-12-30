@@ -13,7 +13,7 @@
 - OWASP Top 10 testing
 
 # Security
-- JWT
+- JWT (https://www.toptal.com/spring/spring-security-tutorial)
   - JWT testing
   - JWT validation
   - JWT session duration
