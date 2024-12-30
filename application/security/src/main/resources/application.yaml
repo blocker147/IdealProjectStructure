@@ -1,6 +1,6 @@
 logging:
   level:
-    org.springframework.security: TRACE
+    org.springframework.security: INFO
 
 springdoc:
   api-docs:
@@ -14,8 +14,8 @@ spring:
       client:
         registration:
           github:
-            client-id: Ov23liJNqojO4CIUlyCT
-            client-secret: cff0144475487aa5b3c8ab9f2454cbdbcbc3c4af
+            client-id: ${GITHUB_CLIENT_ID}
+            client-secret: ${GITHUB_CLIENT_SECRET}
             scope: read:user
             redirect-uri: "{baseUrl}/login/oauth2/code/github"
             authorization-grant-type: authorization_code
