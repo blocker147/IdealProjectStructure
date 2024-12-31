@@ -1,10 +1,8 @@
-package com.example.security.config
+package com.example.spring.security.config
 
 import com.example.spring.security.jwt.JwtAuthenticationProvider
 import com.example.spring.security.jwt.JwtFilter
 import com.example.spring.security.jwt.JwtUtil
-import com.example.spring.security.config.OAuth2SuccessHandler
-import com.example.spring.security.config.SecurityConfig
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
@@ -54,7 +52,7 @@ class SecurityConfigTest {
         @Bean
         fun authenticationSuccessHandler(
             jwtUtil: JwtUtil
-        ) = OAuth2SuccessHandler(jwtUtil)
+        ) = AfterOAuth2SuccessfulAuthentication(jwtUtil)
 
         @Bean
         fun clientRegistrationRepository(): ClientRegistrationRepository {

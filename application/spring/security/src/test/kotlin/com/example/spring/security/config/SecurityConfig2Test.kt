@@ -1,11 +1,8 @@
-package com.example.security.config
+package com.example.spring.security.config
 
 import com.example.spring.security.jwt.JwtAuthenticationProvider
 import com.example.spring.security.jwt.JwtFilter
 import com.example.spring.security.jwt.JwtUtil
-import com.example.spring.security.config.OAuth2SuccessHandler
-import com.example.spring.security.config.SecurityConfig
-import com.example.spring.security.config.SecurityViolationHandler
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
@@ -32,8 +29,8 @@ import org.springframework.web.bind.annotation.RestController
     JwtFilter::class,
     JwtUtil::class,
     JwtAuthenticationProvider::class,
-    OAuth2SuccessHandler::class,
-    SecurityViolationHandler::class,
+    AfterOAuth2SuccessfulAuthentication::class,
+    AuthenticationExceptionHandler::class,
 ])
 @AutoConfigureMockMvc
 class SecurityConfig2Test {

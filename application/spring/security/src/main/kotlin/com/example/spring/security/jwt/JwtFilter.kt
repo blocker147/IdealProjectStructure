@@ -15,7 +15,6 @@ class JwtFilter(
 
     override fun shouldNotFilter(request: HttpServletRequest): Boolean {
         val path = request.requestURI
-        // todo: limit URL to filter
         if (path == "/") return true
         return super.shouldNotFilter(request)
     }
@@ -57,7 +56,7 @@ class JwtFilter(
                     return true
                 } else {
                     response.status = HttpServletResponse.SC_UNAUTHORIZED
-                    response.writer.write("Unauthorized: JWT token from Header is invalid")
+//                    response.writer.write("Unauthorized: JWT token from Header is invalid")
                     return true
                 }
             }
@@ -78,7 +77,7 @@ class JwtFilter(
                 return true
             } else {
                 response.status = HttpServletResponse.SC_UNAUTHORIZED
-                response.writer.write("Unauthorized: JWT token from Cookies is invalid")
+//                response.writer.write("Unauthorized: JWT token from Cookies is invalid")
                 return true
             }
 

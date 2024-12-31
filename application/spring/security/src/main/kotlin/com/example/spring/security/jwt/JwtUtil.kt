@@ -1,7 +1,8 @@
 package com.example.spring.security.jwt
 
-import io.jsonwebtoken.Claims
+import io.jsonwebtoken.JwtException
 import io.jsonwebtoken.Jwts
+import io.jsonwebtoken.UnsupportedJwtException
 import io.jsonwebtoken.security.Keys
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Component
@@ -16,7 +17,7 @@ class JwtUtil(
     fun generateToken(username: String): String {
         val claims: Map<String, Any> = mapOf(
             "username" to username,
-            "roles" to listOf("ROLE_USER", "ROLE_ADMIN")
+//            "roles" to listOf("ROLE_USER", "ROLE_ADMIN")
         )
         return Jwts.builder()
             .claims(claims)
@@ -27,21 +28,25 @@ class JwtUtil(
             .compact()
     }
 
-    fun getClaims(token: String): Claims {
-        val claims = Jwts.parser()
-            .verifyWith(secretKey)
-            .build()
-            .parseSignedClaims(token)
-        return claims.payload
-    }
-
     fun validateToken(token: String): Boolean {
-        val claims = Jwts.parser()
-            .verifyWith(secretKey)
-            .build()
-            .parseSignedClaims(token)
-        val expiration = claims.payload.expiration
-        return !expiration.before(Date())
+        try {
+            val claims = Jwts.parser()
+                .verifyWith(secretKey)
+                .build()
+                .parseSignedClaims(token)
+            val expiration = claims.payload.expiration
+            return !expiration.before(Date())
+        } catch (e: UnsupportedJwtException) {
+            // UnsupportedJwtException – if the jwt argument does not represent a signed Claims JWT
+
+        } catch (e: JwtException) {
+            //JwtException – if the jwt string cannot be parsed or validated as required.
+
+        } catch (e: IllegalArgumentException) {
+            //IllegalArgumentException – if the jwt string is null or empty or only whitespace
+
+        }
+        return true
     }
 
     fun getUsernameFromToken(token: String): String {
@@ -51,14 +56,5 @@ class JwtUtil(
             .parseSignedClaims(token)
             .payload
         return claims.subject
-    }
-
-    fun getRolesFromToken(token: String): List<String> {
-        val claims = Jwts.parser()
-            .verifyWith(secretKey)
-            .build()
-            .parseSignedClaims(token)
-            .payload
-        return claims["roles"] as List<String>
     }
 }
