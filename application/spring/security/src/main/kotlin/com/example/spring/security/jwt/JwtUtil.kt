@@ -1,5 +1,6 @@
 package com.example.spring.security.jwt
 
+import io.jsonwebtoken.Claims
 import io.jsonwebtoken.Jwts
 import io.jsonwebtoken.security.Keys
 import org.springframework.beans.factory.annotation.Value
@@ -13,14 +14,25 @@ class JwtUtil(
     private val secretKey = Keys.hmacShaKeyFor(jwtSigningKey.toByteArray())
 
     fun generateToken(username: String): String {
-        val claims: Map<String, Any> = mapOf("username" to username)
+        val claims: Map<String, Any> = mapOf(
+            "username" to username,
+            "roles" to listOf("ROLE_USER", "ROLE_ADMIN")
+        )
         return Jwts.builder()
             .claims(claims)
             .subject(username)
             .issuedAt(Date())
-            .expiration(Date(System.currentTimeMillis() + 1000 * 60 * 60))
+            .expiration(Date(System.currentTimeMillis() + 1000 * 60 * 60 * 24))
             .signWith(secretKey)
             .compact()
+    }
+
+    fun getClaims(token: String): Claims {
+        val claims = Jwts.parser()
+            .verifyWith(secretKey)
+            .build()
+            .parseSignedClaims(token)
+        return claims.payload
     }
 
     fun validateToken(token: String): Boolean {

@@ -3,8 +3,9 @@ package com.example.security.config
 import com.example.spring.security.jwt.JwtAuthenticationProvider
 import com.example.spring.security.jwt.JwtFilter
 import com.example.spring.security.jwt.JwtUtil
-import com.example.spring.security.config.CustomAuthenticationSuccessHandler
+import com.example.spring.security.config.OAuth2SuccessHandler
 import com.example.spring.security.config.SecurityConfig
+import com.example.spring.security.config.SecurityViolationHandler
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
@@ -31,7 +32,8 @@ import org.springframework.web.bind.annotation.RestController
     JwtFilter::class,
     JwtUtil::class,
     JwtAuthenticationProvider::class,
-    CustomAuthenticationSuccessHandler::class
+    OAuth2SuccessHandler::class,
+    SecurityViolationHandler::class,
 ])
 @AutoConfigureMockMvc
 class SecurityConfig2Test {
@@ -99,8 +101,18 @@ class SecurityConfig2Test {
     }
 
     @Test
-    fun `when user is not authenticated and has no JWT token - then redirect`() {
-        mockMvc.perform(get(securedEndpoint))
+    fun `when Browser user is not authenticated and has no JWT token - then redirect`() {
+        mockMvc.perform(
+            get(securedEndpoint)
+                .header(HttpHeaders.USER_AGENT, "Firefox")
+                .header(HttpHeaders.ACCEPT, "text/html")
+        )
             .andExpect(status().is3xxRedirection)
+    }
+
+    @Test
+    fun `when Non-Browser user is not authenticated and has no JWT token - then return 4xx`() {
+        mockMvc.perform(get(securedEndpoint))
+            .andExpect(status().is4xxClientError)
     }
 }
