@@ -6,7 +6,6 @@ import com.example.spring.security.utils.HTTPUtils
 import jakarta.servlet.FilterChain
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.security.authentication.InsufficientAuthenticationException
 import org.springframework.stereotype.Component
@@ -16,7 +15,7 @@ import org.springframework.web.servlet.HandlerExceptionResolver
 @Component
 class JWTFilter(
     private val jwtService: JWTService,
-    @Qualifier("handlerExceptionResolver") @Autowired val resolver: HandlerExceptionResolver,
+    @Qualifier("handlerExceptionResolver") private val resolver: HandlerExceptionResolver,
 ) : OncePerRequestFilter() {
 
     companion object {

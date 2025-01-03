@@ -6,7 +6,6 @@ import com.example.spring.security.utils.HTTPUtils
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
 import org.springframework.security.core.Authentication
-import org.springframework.security.web.DefaultRedirectStrategy
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler
 import org.springframework.stereotype.Component
 
@@ -28,7 +27,6 @@ class AfterOAuth2SuccessfulAuthentication(
         HTTPUtils.addJWTCookie(response, JWTType.ACCESS_TOKEN, accessToken)
         HTTPUtils.addJWTCookie(response, JWTType.REFRESH_TOKEN, refreshToken)
 
-        // fixme: perhaps Location header can be used with status of 3xx
-        DefaultRedirectStrategy().sendRedirect(request, response, "/home")
+        HTTPUtils.redirect(response, "/home")
     }
 }

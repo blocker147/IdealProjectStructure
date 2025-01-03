@@ -1,5 +1,6 @@
 package com.example.spring.security.jwt
 
+import com.example.spring.security.jwt.JWTType.REFRESH_TOKEN
 import io.jsonwebtoken.Jwts
 import io.jsonwebtoken.impl.FixedClock
 import io.jsonwebtoken.security.Keys
@@ -7,6 +8,7 @@ import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Component
 import java.time.Clock
 import java.util.Date
+import java.util.UUID
 
 @Component
 class JWTService(
@@ -27,6 +29,11 @@ class JWTService(
             .signWith(secretKey)
             .expiration(Date(now + type.expiration))
 
+        if (type == REFRESH_TOKEN) {
+            val jti = UUID.randomUUID().toString()
+            jwtBuilder.id(jti)
+        }
+
         return jwtBuilder.compact()
     }
 
@@ -34,15 +41,17 @@ class JWTService(
      * @return username from token if it's valid, otherwise null
      * */
     fun verifyJWT(token: String, type: JWTType): String? {
-        if (type == JWTType.REFRESH_TOKEN && blackList.contains(token)) return null
+        if (type == REFRESH_TOKEN && blackList.contains(token)) return null
         return try {
-            Jwts.parser()
+            val payload = Jwts.parser()
                 .clock(FixedClock(clock.millis()))
                 .verifyWith(secretKey)
                 .build()
                 .parseSignedClaims(token)
                 .payload
-                .subject
+
+            if (type == REFRESH_TOKEN && payload.id == null) null
+            else payload.subject
         } catch (e: Exception) {
             null
         }
