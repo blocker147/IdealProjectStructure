@@ -11,7 +11,6 @@ dependencies {
     implementation(libs.spring.boot.starter.web)
     implementation("org.springframework.boot:spring-boot-starter-oauth2-client")
     implementation("org.springframework.boot:spring-boot-starter-security")
-    implementation("org.springframework.boot:spring-boot-starter-thymeleaf")
 
     implementation("io.jsonwebtoken:jjwt-api:0.12.6")
     implementation("io.jsonwebtoken:jjwt-impl:0.12.6")
@@ -21,21 +20,7 @@ dependencies {
     testImplementation("org.springframework.security:spring-security-test")
     testImplementation(libs.jupiter)
     testImplementation(libs.kotest)
-    // JWT library for Spring Application
-    //<dependency>
-    //  <groupId>org.springframework.boot</groupId>
-    //  <artifactId>spring-boot-starter-security</artifactId>
-    //</dependency>
-    //<dependency>
-    //  <groupId>io.jsonwebtoken</groupId>
-    //  <artifactId>jjwt-api</artifactId>
-    //  <version>0.11.5</version>
-    //</dependency>
-    //<dependency>
-    //  <groupId>org.springframework.security</groupId>
-    //  <artifactId>spring-security-jwt</artifactId>
-    //  <version>1.1.1.RELEASE</version>
-    //</dependency>
+    testImplementation(libs.mockk)
 }
 tasks.named('bootJar').configure {
     enabled = false
