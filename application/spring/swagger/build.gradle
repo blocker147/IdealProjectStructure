@@ -8,7 +8,7 @@ repositories {
     mavenCentral()
 }
 dependencies {
-    implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.2.0")
+    implementation(libs.springdoc.openapi.ui)
 }
 tasks.named('bootJar').configure {
     enabled = false
