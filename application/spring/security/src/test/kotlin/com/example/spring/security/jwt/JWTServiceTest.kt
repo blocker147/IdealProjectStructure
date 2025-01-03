@@ -24,31 +24,29 @@ class JWTServiceTest {
 
     @Test
     fun `when generate access token - then return valid token`() {
-        val (token, expiresAfter) = target.generateToken(username, JWTService.TokenType.ACCESS_TOKEN)
+        val token = target.generateJWT(username, JWTType.ACCESS_TOKEN)
 
-        val actual = target.verifyToken(token, JWTService.TokenType.ACCESS_TOKEN)
+        val actual = target.verifyJWT(token, JWTType.ACCESS_TOKEN)
 
         actual.shouldNotBeNull()
         actual shouldBe username
-        expiresAfter shouldBe JWTService.JWT_ACCESS_TOKEN_EXPIRATION
     }
 
     @Test
     fun `when generate refresh token - then return valid token`() {
-        val (token, expiresAfter) = target.generateToken(username, JWTService.TokenType.REFRESH_TOKEN)
+        val token = target.generateJWT(username, JWTType.REFRESH_TOKEN)
 
-        val actual = target.verifyToken(token, JWTService.TokenType.REFRESH_TOKEN)
+        val actual = target.verifyJWT(token, JWTType.REFRESH_TOKEN)
 
         actual.shouldNotBeNull()
         actual shouldBe username
-        expiresAfter shouldBe JWTService.JWT_REFRESH_TOKEN_EXPIRATION
     }
 
     @Test
     fun `when access token is valid - then return username`() {
-        val (token, _) = target.generateToken(username, JWTService.TokenType.ACCESS_TOKEN)
+        val token = target.generateJWT(username, JWTType.ACCESS_TOKEN)
 
-        val actual = target.verifyToken(token, JWTService.TokenType.ACCESS_TOKEN)
+        val actual = target.verifyJWT(token, JWTType.ACCESS_TOKEN)
 
         actual.shouldNotBeNull()
         actual shouldBe username
@@ -56,9 +54,9 @@ class JWTServiceTest {
 
     @Test
     fun `when refresh token is valid - then return username`() {
-        val (token, _) = target.generateToken(username, JWTService.TokenType.REFRESH_TOKEN)
+        val token = target.generateJWT(username, JWTType.REFRESH_TOKEN)
 
-        val actual = target.verifyToken(token, JWTService.TokenType.REFRESH_TOKEN)
+        val actual = target.verifyJWT(token, JWTType.REFRESH_TOKEN)
 
         actual.shouldNotBeNull()
         actual shouldBe username
@@ -66,28 +64,28 @@ class JWTServiceTest {
 
     @Test
     fun `when access token is invalid - then return null`() {
-        val (token, _) = target.generateToken(username, JWTService.TokenType.ACCESS_TOKEN)
+        val token = target.generateJWT(username, JWTType.ACCESS_TOKEN)
 
-        val actual = target.verifyToken(token.reversed(), JWTService.TokenType.ACCESS_TOKEN)
+        val actual = target.verifyJWT(token.reversed(), JWTType.ACCESS_TOKEN)
 
         actual.shouldBeNull()
     }
 
     @Test
     fun `when refresh token is invalid - then return null`() {
-        val (token, _) = target.generateToken(username, JWTService.TokenType.REFRESH_TOKEN)
+        val token = target.generateJWT(username, JWTType.REFRESH_TOKEN)
 
-        val actual = target.verifyToken(token.reversed(), JWTService.TokenType.REFRESH_TOKEN)
+        val actual = target.verifyJWT(token.reversed(), JWTType.REFRESH_TOKEN)
 
         actual.shouldBeNull()
     }
 
     @Test
     fun `when refresh token is added in blacklist but requesting for access token - then return username`() {
-        val (token, _) = target.generateToken(username, JWTService.TokenType.REFRESH_TOKEN)
+        val token = target.generateJWT(username, JWTType.REFRESH_TOKEN)
         target.blacklistRefreshToken(token)
 
-        val actual = target.verifyToken(token, JWTService.TokenType.ACCESS_TOKEN)
+        val actual = target.verifyJWT(token, JWTType.ACCESS_TOKEN)
 
         actual.shouldNotBeNull()
         actual shouldBe username
@@ -95,38 +93,38 @@ class JWTServiceTest {
 
     @Test
     fun `when refresh token is added in blacklist and requesting for refresh token - then return null`() {
-        val (token, _) = target.generateToken(username, JWTService.TokenType.REFRESH_TOKEN)
+        val token = target.generateJWT(username, JWTType.REFRESH_TOKEN)
         target.blacklistRefreshToken(token)
 
-        val actual = target.verifyToken(token, JWTService.TokenType.REFRESH_TOKEN)
+        val actual = target.verifyJWT(token, JWTType.REFRESH_TOKEN)
 
         actual.shouldBeNull()
     }
 
     @Test
     fun `when requesting expired access token - then return null`() {
-        val (token, _) = target.generateToken(username, JWTService.TokenType.ACCESS_TOKEN)
+        val token = target.generateJWT(username, JWTType.ACCESS_TOKEN)
         target.clock = Clock.fixed(instant
-            .plus(JWTService.JWT_ACCESS_TOKEN_EXPIRATION.toLong(), ChronoUnit.MINUTES)
+            .plus(JWTType.ACCESS_TOKEN.expiration.toLong(), ChronoUnit.MINUTES)
             .plus(1, ChronoUnit.SECONDS),
             Clock.systemUTC().zone
         )
 
-        val actual = target.verifyToken(token, JWTService.TokenType.ACCESS_TOKEN)
+        val actual = target.verifyJWT(token, JWTType.ACCESS_TOKEN)
 
         actual.shouldBeNull()
     }
 
     @Test
     fun `when requesting expired refresh token - then return null`() {
-        val (token, _) = target.generateToken(username, JWTService.TokenType.REFRESH_TOKEN)
+        val token = target.generateJWT(username, JWTType.REFRESH_TOKEN)
         target.clock = Clock.fixed(instant
-            .plus(JWTService.JWT_REFRESH_TOKEN_EXPIRATION.toLong(), ChronoUnit.MINUTES)
+            .plus(JWTType.ACCESS_TOKEN.expiration.toLong(), ChronoUnit.MINUTES)
             .plus(1, ChronoUnit.SECONDS),
             Clock.systemUTC().zone
         )
 
-        val actual = target.verifyToken(token, JWTService.TokenType.REFRESH_TOKEN)
+        val actual = target.verifyJWT(token, JWTType.REFRESH_TOKEN)
 
         actual.shouldBeNull()
     }
