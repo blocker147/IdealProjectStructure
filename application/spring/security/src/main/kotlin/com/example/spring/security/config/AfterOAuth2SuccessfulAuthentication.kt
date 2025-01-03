@@ -1,7 +1,8 @@
 package com.example.spring.security.config
 
 import com.example.spring.security.jwt.JWTService
-import com.example.spring.security.jwt.JWTType
+import com.example.spring.security.jwt.JWTType.ACCESS_TOKEN
+import com.example.spring.security.jwt.JWTType.REFRESH_TOKEN
 import com.example.spring.security.utils.HTTPUtils
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
@@ -21,11 +22,11 @@ class AfterOAuth2SuccessfulAuthentication(
     ) {
         val username = authentication.name
 
-        val accessToken = jwtService.generateJWT(username, JWTType.ACCESS_TOKEN)
-        val refreshToken = jwtService.generateJWT(username, JWTType.REFRESH_TOKEN)
+        val accessToken = jwtService.generateJWT(username, ACCESS_TOKEN)
+        val refreshToken = jwtService.generateJWT(username, REFRESH_TOKEN)
 
-        HTTPUtils.addJWTCookie(response, JWTType.ACCESS_TOKEN, accessToken)
-        HTTPUtils.addJWTCookie(response, JWTType.REFRESH_TOKEN, refreshToken)
+        HTTPUtils.addJWTCookie(response, ACCESS_TOKEN, accessToken)
+        HTTPUtils.addJWTCookie(response, REFRESH_TOKEN, refreshToken)
 
         HTTPUtils.redirect(response, "/home")
     }

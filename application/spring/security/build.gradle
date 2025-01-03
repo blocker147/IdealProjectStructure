@@ -10,21 +10,21 @@ repositories {
 dependencies {
     /* spring */
     implementation(libs.spring.boot.starter.web)
-    implementation("org.springframework.boot:spring-boot-starter-oauth2-client")
-    implementation("org.springframework.boot:spring-boot-starter-security")
+    implementation(libs.spring.boot.starter.security)
+    implementation(libs.spring.boot.starter.oauth2.client)
 
     /* kotlin */
-    implementation 'org.jetbrains.kotlin:kotlin-stdlib-jdk8'
-    implementation 'io.github.microutils:kotlin-logging-jvm:3.0.5'
+    implementation(libs.kotlin)
+    implementation(libs.kotlin.logging)
 
     /* jwt */
-    implementation("io.jsonwebtoken:jjwt-api:0.12.6")
-    implementation("io.jsonwebtoken:jjwt-impl:0.12.6")
-    runtimeOnly("io.jsonwebtoken:jjwt-jackson:0.12.6")
+    implementation(libs.jjwt.api)
+    implementation(libs.jjwt.impl)
+    runtimeOnly(libs.jjwt.jackson)
 
     /* testing */
-    testImplementation("org.springframework.boot:spring-boot-starter-test")
-    testImplementation("org.springframework.security:spring-security-test")
+    testImplementation(libs.spring.boot.starter.test)
+    testImplementation(libs.spring.boot.security.test)
     testImplementation(libs.jupiter)
     testImplementation(libs.kotest)
     testImplementation(libs.mockk)
@@ -34,4 +34,5 @@ tasks.named('bootJar').configure {
 }
 tasks.test {
     useJUnitPlatform()
+    failFast = true
 }

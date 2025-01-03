@@ -11,6 +11,8 @@ feign-form                  = "3.8.0"
 # --- Open-API generator libraries versions ---
 jackson-datatype-jsr310     = "2.15.2"
 javax-servlet-api           = "4.0.1"
+# --- Other libraries versions ---
+jjwt                        = "0.12.6"
 # --- Testing liraries versions ---
 jupiter                     = "5.10.0"
 kotest                      = "5.7.2"
@@ -28,7 +30,9 @@ jackson-module-kotlin               = { module = "com.fasterxml.jackson.module:j
 # --- Spring libraries ---
 spring-boot-starter                 = { module = "org.springframework.boot:spring-boot-starter" }                   # version set through spring dependency management
 spring-boot-starter-web             = { module = "org.springframework.boot:spring-boot-starter-web" }               # version set through spring dependency management
+spring-boot-starter-security        = { module = "org.springframework.boot:spring-boot-starter-security" }          # version set through spring dependency management
 spring-boot-starter-data-mongodb    = { module = "org.springframework.boot:spring-boot-starter-data-mongodb" }      # version set through spring dependency management
+spring-boot-starter-oauth2-client   = { module = "org.springframework.boot:spring-boot-starter-oauth2-client" }     # version set through spring dependency management
 # --- Feign libraries ---
 feign-core                          = { module = "io.github.openfeign:feign-core",                                  version.ref = "feign-core" }
 feign-slf4j                         = { module = "io.github.openfeign:feign-slf4j",                                 version.ref = "feign-core" }
@@ -38,12 +42,17 @@ feign-form                          = { module = "io.github.openfeign.form:feign
 # --- Open-API generator libraries ---
 javax-servlet-api                   = { module = "javax.servlet:javax.servlet-api",                                 version.ref = "javax-servlet-api" }
 jackson-datatype-jsr310             = { module = "com.fasterxml.jackson.datatype:jackson-datatype-jsr310",          version.ref = "jackson-datatype-jsr310" }
+# --- Other libraries ---
+jjwt-api                            = { module = "io.jsonwebtoken:jjwt-api",                                        version.ref = "jjwt" }
+jjwt-impl                           = { module = "io.jsonwebtoken:jjwt-impl",                                       version.ref = "jjwt" }
+jjwt-jackson                        = { module = "io.jsonwebtoken:jjwt-jackson",                                    version.ref = "jjwt" }
 # --- Testing libraries ---
 jupiter                             = { module = "org.junit.jupiter:junit-jupiter",                                 version.ref = "jupiter" }
 kotest                              = { module = "io.kotest:kotest-assertions-core",                                version.ref = "kotest" }
 mockk                               = { module = "io.mockk:mockk",                                                  version.ref = "mockk" }
 wiremock                            = { module = "org.wiremock:wiremock",                                           version.ref = "wiremock" }
 spring-boot-starter-test            = { module = "org.springframework.boot:spring-boot-starter-test" }              # version set through spring dependency management
+spring-boot-security-test           = { module = "org.springframework.security:spring-security-test" }             # version set through spring dependency management
 
 # ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 # ------------------------------------------------------------------------ plugins ---------------------------------------------------------------------------------------------------
