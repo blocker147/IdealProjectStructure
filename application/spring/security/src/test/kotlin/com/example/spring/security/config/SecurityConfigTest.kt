@@ -1,11 +1,8 @@
-package com.example.security.config
+package com.example.spring.security.config
 
-import com.example.spring.security.jwt.JwtAuthenticationProvider
-import com.example.spring.security.jwt.JwtFilter
-import com.example.spring.security.jwt.JwtUtil
-import com.example.spring.security.config.OAuth2SuccessHandler
-import com.example.spring.security.config.SecurityConfig
-import com.example.spring.security.config.SecurityViolationHandler
+import com.example.spring.security.jwt.JWTFilter
+import com.example.spring.security.jwt.JWTService
+import com.example.spring.security.jwt.JWTType.ACCESS_TOKEN
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
@@ -24,19 +21,22 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.servlet.HandlerExceptionResolver
+import org.springframework.web.servlet.mvc.support.DefaultHandlerExceptionResolver
+import java.time.Clock
 
 @SpringBootTest(classes =
 [
-    SecurityConfig2Test.AppConfig::class,
+    SecurityConfigTest.AppConfig::class,
     SecurityConfig::class,
-    JwtFilter::class,
-    JwtUtil::class,
-    JwtAuthenticationProvider::class,
-    OAuth2SuccessHandler::class,
-    SecurityViolationHandler::class,
+    JWTFilter::class,
+    JWTService::class,
+    AfterOAuth2SuccessfulAuthentication::class,
+    AuthenticationExceptionHandler::class,
+    JWTService::class,
 ])
 @AutoConfigureMockMvc
-class SecurityConfig2Test {
+class SecurityConfigTest {
     @Configuration
     class AppConfig {
         @Bean
@@ -55,6 +55,12 @@ class SecurityConfig2Test {
             return InMemoryClientRegistrationRepository(clientRegistration)
         }
 
+        @Bean
+        fun clock(): Clock = Clock.systemUTC()
+
+        @Bean
+        fun handlerExceptionResolver(): HandlerExceptionResolver = DefaultHandlerExceptionResolver()
+
         @RestController
         class TestController {
             @GetMapping("/")
@@ -69,7 +75,7 @@ class SecurityConfig2Test {
     private lateinit var mockMvc: MockMvc
 
     @Autowired
-    private lateinit var jwtUtil: JwtUtil
+    private lateinit var jwtService: JWTService
 
     private val securedEndpoint = "/secured"
 
@@ -81,7 +87,7 @@ class SecurityConfig2Test {
 
     @Test
     fun `when user has token in header - then return 2xx`() {
-        val token = jwtUtil.generateToken("user")
+        val token = jwtService.generateJWT("user", ACCESS_TOKEN)
 
         mockMvc.perform(
             get(securedEndpoint)
@@ -91,8 +97,8 @@ class SecurityConfig2Test {
 
     @Test
     fun `when user has token in cookie - then return 2xx`() {
-        val token = jwtUtil.generateToken("user")
-        val jwtCookie = MockCookie("jwt-token", token)
+        val token = jwtService.generateJWT("user", ACCESS_TOKEN)
+        val jwtCookie = MockCookie(ACCESS_TOKEN.cookieName, token)
 
         mockMvc.perform(
             get(securedEndpoint)

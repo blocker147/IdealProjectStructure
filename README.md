@@ -1,6 +1,4 @@
 # Priorities:
-- More tests for Spring Security
-- More tests for JWT
 - Improved logging (See API requests/responses in DEBUG logs)
 
 # Optimization
@@ -18,12 +16,7 @@
 - OWASP Top 10 testing
 
 # Security
-- JWT (https://www.toptal.com/spring/spring-security-tutorial)
-  - JWT testing
-  - JWT validation
-  - JWT session duration
-  - JWT refresh token
-  - JWT blacklisting
+- JWT (use database for blacklisting)
 - Rate Limiting
 - Database security
 - External API calls security
