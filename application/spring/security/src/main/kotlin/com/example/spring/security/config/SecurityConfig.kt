@@ -1,6 +1,6 @@
 package com.example.spring.security.config
 
-import com.example.spring.security.jwt.JwtFilter
+import com.example.spring.security.jwt.JWTFilter
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
@@ -15,7 +15,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @Configuration
 @EnableWebSecurity
 class SecurityConfig(
-    private val jwtFilter: JwtFilter,
+    private val jwtFilter: JWTFilter,
     private val authenticationSuccessHandler: AuthenticationSuccessHandler,
     private val authenticationEntryPoint: AuthenticationEntryPoint,
     private val accessDeniedHandler: AccessDeniedHandler,
