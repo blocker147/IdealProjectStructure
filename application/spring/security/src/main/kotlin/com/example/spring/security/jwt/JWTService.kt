@@ -27,7 +27,7 @@ class JWTService(
             .subject(username)
             .issuedAt(Date(now))
             .signWith(secretKey)
-            .expiration(Date(now + type.expiration))
+            .expiration(Date(now + type.expirationInMinutes))
 
         if (type == REFRESH_TOKEN) {
             val jti = UUID.randomUUID().toString()

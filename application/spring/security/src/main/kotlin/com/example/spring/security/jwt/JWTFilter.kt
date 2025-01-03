@@ -1,7 +1,8 @@
 package com.example.spring.security.jwt
 
 import com.example.spring.security.config.AuthenticationUtils
-import com.example.spring.security.jwt.JWTType.*
+import com.example.spring.security.jwt.JWTType.ACCESS_TOKEN
+import com.example.spring.security.jwt.JWTType.REFRESH_TOKEN
 import com.example.spring.security.utils.HTTPUtils
 import jakarta.servlet.FilterChain
 import jakarta.servlet.http.HttpServletRequest
@@ -19,13 +20,14 @@ class JWTFilter(
 ) : OncePerRequestFilter() {
 
     companion object {
-        const val JWT_ATTRIBUTE = "com.example.spring.security.jwt.JWT_ATTRIBUTE"
-        val FILTERED_PATHS = arrayOf("/", "/favicon.ico", "/error")
+        private val STATIC_RESOURCES = arrayOf(".css", ".js", ".png")
+        private val FILTERED_PATHS = arrayOf("/", "/favicon.ico", "/error")
     }
 
     override fun shouldNotFilter(request: HttpServletRequest): Boolean {
         val path = request.requestURI
-        if (FILTERED_PATHS.contains(path)) return true
+        if (STATIC_RESOURCES.any { path.endsWith(it) }) return true
+        if (FILTERED_PATHS.any { path == it }) return true
         return super.shouldNotFilter(request)
     }
 
@@ -34,21 +36,11 @@ class JWTFilter(
         response: HttpServletResponse,
         filterChain: FilterChain
     ) {
-//        val attribute = request.getAttribute(JWT_ATTRIBUTE) ?: false
-//        if (attribute == true) {
-//            filterChain.doFilter(request, response)
-//            return
-//        }
-
-        val username = tryAuthenticateWithAccessToken(request) ?: tryRenewAccessTokenUsingRefreshToken(request, response)
-        if (username != null) {
-            AuthenticationUtils.authenticate(username, emptyList())
-//            request.setAttribute(JWT_ATTRIBUTE, true)
+        (tryAuthenticateWithAccessToken(request) ?: tryRenewAccessTokenUsingRefreshToken(request, response))?.let {
+            AuthenticationUtils.authenticate(it, emptyList())
             filterChain.doFilter(request, response)
             return
         }
-
-//        request.setAttribute(JWT_ATTRIBUTE, true)
         redirectOrReturnErrorMessage(request, response)
     }
 
@@ -90,13 +82,11 @@ class JWTFilter(
     private fun redirectOrReturnErrorMessage(request: HttpServletRequest, response: HttpServletResponse) {
         if (HTTPUtils.isRequestFromBrowser(request)) {
             HTTPUtils.redirect(response, "/")
-            return
         } else {
             val exception = InsufficientAuthenticationException("Access token is expired or invalid. "
                     + "Authenticate again using OAuth2 or provide refresh token to receive new access token.")
             response.status = HttpServletResponse.SC_UNAUTHORIZED
             resolver.resolveException(request, response, null, exception)
-            return
         }
     }
 }

@@ -28,6 +28,7 @@ class SecurityConfig(
             }
             .authorizeHttpRequests { it
                 .requestMatchers("/", "/favicon.ico", "/static/**", "/public/**", "/error").permitAll()
+                .requestMatchers("/swagger-ui/**", "/custom-api-docs/**").permitAll()
                 .anyRequest().authenticated()
             }
             .oauth2Login { it

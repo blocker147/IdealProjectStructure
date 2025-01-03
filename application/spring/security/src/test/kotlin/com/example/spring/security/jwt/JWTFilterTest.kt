@@ -6,7 +6,6 @@ import io.kotest.matchers.shouldBe
 import io.mockk.*
 import jakarta.servlet.http.HttpServletResponse
 import org.junit.jupiter.api.BeforeEach
-import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import org.springframework.http.HttpHeaders
 import org.springframework.mock.web.MockCookie
@@ -35,18 +34,6 @@ class JWTFilterTest {
         every { jwtServiceMock.verifyJWT(any(), any()) } returns username
         every { jwtServiceMock.blackListJWT(any()) } returns Unit
     }
-
-    @Test
-    fun `when request is made to filtered paths - then do not filter`() {
-        request.requestURI = JWTFilter.FILTERED_PATHS[0]
-
-        target.doFilter(request, response, filterChain)
-
-        request.getAttribute(JWTFilter.JWT_ATTRIBUTE) shouldBe null
-    }
-
-    @Disabled
-    fun `when request has multiple paths - then do filter only once`() {}
 
     @Test
     fun `when request has only access token in cookie - then authenticate user`() {

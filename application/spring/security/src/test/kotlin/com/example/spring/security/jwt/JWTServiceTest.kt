@@ -105,7 +105,7 @@ class JWTServiceTest {
     fun `when requesting expired access token - then return null`() {
         val token = target.generateJWT(username, JWTType.ACCESS_TOKEN)
         target.clock = Clock.fixed(instant
-            .plus(JWTType.ACCESS_TOKEN.expiration.toLong(), ChronoUnit.MINUTES)
+            .plus(JWTType.ACCESS_TOKEN.expirationInMinutes.toLong(), ChronoUnit.MINUTES)
             .plus(1, ChronoUnit.SECONDS),
             Clock.systemUTC().zone
         )
@@ -119,7 +119,7 @@ class JWTServiceTest {
     fun `when requesting expired refresh token - then return null`() {
         val token = target.generateJWT(username, JWTType.REFRESH_TOKEN)
         target.clock = Clock.fixed(instant
-            .plus(JWTType.ACCESS_TOKEN.expiration.toLong(), ChronoUnit.MINUTES)
+            .plus(JWTType.ACCESS_TOKEN.expirationInMinutes.toLong(), ChronoUnit.MINUTES)
             .plus(1, ChronoUnit.SECONDS),
             Clock.systemUTC().zone
         )

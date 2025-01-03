@@ -22,7 +22,7 @@ object HTTPUtils {
 
     fun addJWTCookie(response: HttpServletResponse, type: JWTType, token: String) {
         response.addCookie(Cookie(type.cookieName, token).apply {
-            maxAge = type.expiration
+            maxAge = type.expirationInSeconds()
             isHttpOnly = true
             secure = true
             path = "/"
