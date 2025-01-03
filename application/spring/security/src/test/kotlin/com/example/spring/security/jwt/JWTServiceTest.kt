@@ -83,7 +83,7 @@ class JWTServiceTest {
     @Test
     fun `when refresh token is added in blacklist but requesting for access token - then return username`() {
         val token = target.generateJWT(username, JWTType.REFRESH_TOKEN)
-        target.blacklistRefreshToken(token)
+        target.blackListJWT(token)
 
         val actual = target.verifyJWT(token, JWTType.ACCESS_TOKEN)
 
@@ -94,7 +94,7 @@ class JWTServiceTest {
     @Test
     fun `when refresh token is added in blacklist and requesting for refresh token - then return null`() {
         val token = target.generateJWT(username, JWTType.REFRESH_TOKEN)
-        target.blacklistRefreshToken(token)
+        target.blackListJWT(token)
 
         val actual = target.verifyJWT(token, JWTType.REFRESH_TOKEN)
 

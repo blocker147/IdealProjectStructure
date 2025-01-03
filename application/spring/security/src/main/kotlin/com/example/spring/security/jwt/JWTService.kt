@@ -31,7 +31,7 @@ class JWTService(
     }
 
     /**
-     * @return username
+     * @return username from token if it's valid, otherwise null
      * */
     fun verifyJWT(token: String, type: JWTType): String? {
         if (type == JWTType.REFRESH_TOKEN && blackList.contains(token)) return null
@@ -48,5 +48,7 @@ class JWTService(
         }
     }
 
-    fun blacklistRefreshToken(token: String) = blackList.add(token)
+    fun blackListJWT(token: String) {
+        blackList.add(token)
+    }
 }
