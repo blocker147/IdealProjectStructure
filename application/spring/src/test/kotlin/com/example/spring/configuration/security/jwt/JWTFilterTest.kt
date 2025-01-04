@@ -1,7 +1,9 @@
 package com.example.spring.configuration.security.jwt
 
-import com.example.spring.configuration.security.jwt.JWTType.ACCESS_TOKEN
-import com.example.spring.configuration.security.jwt.JWTType.REFRESH_TOKEN
+import com.example.spring.security.jwt.JWTFilter
+import com.example.spring.security.jwt.JWTService
+import com.example.spring.security.jwt.JWTType.ACCESS_TOKEN
+import com.example.spring.security.jwt.JWTType.REFRESH_TOKEN
 import io.kotest.matchers.shouldBe
 import io.mockk.*
 import jakarta.servlet.http.HttpServletResponse

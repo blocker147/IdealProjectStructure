@@ -1,4 +1,4 @@
-package com.example.spring.configuration.swagger
+package com.example.spring.swagger
 
 import io.swagger.v3.oas.models.ExternalDocumentation
 import io.swagger.v3.oas.models.info.Info

@@ -1,6 +1,6 @@
-package com.example.spring.configuration.security.config
+package com.example.spring.security.config
 
-import com.example.spring.configuration.security.jwt.JWTFilter
+import com.example.spring.security.jwt.JWTFilter
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.security.config.annotation.web.builders.HttpSecurity

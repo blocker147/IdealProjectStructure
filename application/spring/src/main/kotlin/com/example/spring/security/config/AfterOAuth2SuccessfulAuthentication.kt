@@ -1,9 +1,9 @@
-package com.example.spring.configuration.security.config
+package com.example.spring.security.config
 
-import com.example.spring.configuration.security.jwt.JWTService
-import com.example.spring.configuration.security.jwt.JWTType.ACCESS_TOKEN
-import com.example.spring.configuration.security.jwt.JWTType.REFRESH_TOKEN
-import com.example.spring.configuration.security.utils.HTTPUtils
+import com.example.spring.security.jwt.JWTService
+import com.example.spring.security.jwt.JWTType.ACCESS_TOKEN
+import com.example.spring.security.jwt.JWTType.REFRESH_TOKEN
+import com.example.spring.security.utils.HTTPUtils
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
 import org.springframework.security.core.Authentication

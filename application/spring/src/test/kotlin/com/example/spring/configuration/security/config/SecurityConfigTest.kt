@@ -1,8 +1,11 @@
 package com.example.spring.configuration.security.config
 
-import com.example.spring.configuration.security.jwt.JWTFilter
-import com.example.spring.configuration.security.jwt.JWTService
-import com.example.spring.configuration.security.jwt.JWTType.ACCESS_TOKEN
+import com.example.spring.security.config.AfterOAuth2SuccessfulAuthentication
+import com.example.spring.security.config.AuthenticationExceptionHandler
+import com.example.spring.security.config.SecurityConfig
+import com.example.spring.security.jwt.JWTFilter
+import com.example.spring.security.jwt.JWTService
+import com.example.spring.security.jwt.JWTType.ACCESS_TOKEN
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc

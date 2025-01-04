@@ -1,6 +1,6 @@
-package com.example.spring.configuration.security.jwt
+package com.example.spring.security.jwt
 
-import com.example.spring.configuration.security.jwt.JWTType.REFRESH_TOKEN
+import com.example.spring.security.jwt.JWTType.REFRESH_TOKEN
 import io.jsonwebtoken.Jwts
 import io.jsonwebtoken.impl.FixedClock
 import io.jsonwebtoken.security.Keys

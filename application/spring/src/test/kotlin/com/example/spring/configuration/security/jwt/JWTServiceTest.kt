@@ -1,5 +1,7 @@
 package com.example.spring.configuration.security.jwt
 
+import com.example.spring.security.jwt.JWTService
+import com.example.spring.security.jwt.JWTType
 import io.kotest.matchers.nulls.shouldBeNull
 import io.kotest.matchers.nulls.shouldNotBeNull
 import io.kotest.matchers.shouldBe

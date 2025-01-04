@@ -1,4 +1,4 @@
-package com.example.spring.configuration.security.config
+package com.example.spring.security.config
 
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.core.authority.SimpleGrantedAuthority

@@ -1,4 +1,4 @@
-package com.example.spring.configuration.logging
+package com.example.spring.logging
 
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse

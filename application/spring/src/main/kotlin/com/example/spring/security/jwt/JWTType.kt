@@ -1,4 +1,4 @@
-package com.example.spring.configuration.security.jwt
+package com.example.spring.security.jwt
 
 private const val ONE_MINUTE = 1000 * 60
 private const val FIFTEEN_MINUTES = ONE_MINUTE * 15

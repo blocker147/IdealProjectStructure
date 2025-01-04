@@ -1,13 +1,11 @@
-package com.example.spring.configuration.logging
+package com.example.spring.logging
 
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
 import mu.KotlinLogging
 import org.aspectj.lang.ProceedingJoinPoint
-import org.aspectj.lang.annotation.Aspect
 import org.aspectj.lang.annotation.Around
 import org.aspectj.lang.annotation.Pointcut
-import org.springframework.stereotype.Component
 import org.slf4j.MDC
 import java.util.*
 

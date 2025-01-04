@@ -3,6 +3,7 @@ package com.example.infrastructure.client.productnutrition
 import com.example.domain.products.ProductNutrition as ProductNutritionDomain
 import com.example.domain.products.ProductNutritionClient
 import com.example.infrastructure.client.productnutrition.api.ProductNutritionApi
+import com.example.infrastructure.client.productnutrition.exceptions.DownstreamException
 import com.example.infrastructure.client.productnutrition.invoker.ApiClient
 import com.example.infrastructure.client.productnutrition.invoker.ApiResponseDecoder
 import feign.form.FormEncoder
@@ -37,7 +38,11 @@ class ProductNutritionClientImpl(
 //            .errorDecoder()       // perhaps something else can be used
             .target(ProductNutritionApi::class.java, apiClient.basePath)
 
-        val productNutrition = feignClient.getProductById("1")
-        return productNutritionMapper.map(productNutrition)
+        try {
+            val productNutrition = feignClient.getProductById("1")
+            return productNutritionMapper.map(productNutrition)
+        } catch (e: Exception) {
+            throw DownstreamException("Exception from product-nutrition service", e)
+        }
     }
 }

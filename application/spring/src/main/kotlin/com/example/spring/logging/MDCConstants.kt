@@ -1,4 +1,4 @@
-package com.example.spring.configuration.logging
+package com.example.spring.logging
 
 enum class MDCConstants(val key: String) {
     TRACE_ID("traceId")

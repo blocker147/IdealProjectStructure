@@ -1,6 +1,7 @@
-package com.example.spring.configuration.exceptions
+package com.example.spring.exceptions
 
 import com.example.domain.exceptions.ApplicationException
+import com.example.infrastructure.client.productnutrition.exceptions.DownstreamException
 import mu.KotlinLogging
 import org.springframework.context.annotation.Configuration
 import org.springframework.http.HttpStatus
@@ -25,6 +26,17 @@ class GlobalExceptionHandler(
             ErrorResponse(
                 clock.instant().toString(),
                 exception.message ?: "Something went wrong"
+            )
+        )
+    }
+
+    @ExceptionHandler(DownstreamException::class)
+    fun handleDownstreamException(exception: DownstreamException): ResponseEntity<ErrorResponse> {
+        logException(exception)
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
+            ErrorResponse(
+                clock.instant().toString(),
+                exception.message ?: "Something went wrong with downstream service"
             )
         )
     }
