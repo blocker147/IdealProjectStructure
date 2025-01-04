@@ -1,0 +1,22 @@
+plugins {
+    alias(libs.plugins.kotlin)
+    alias(libs.plugins.kotlin.spring)
+    alias(libs.plugins.spring.boot)
+    alias(libs.plugins.spring.dependency.management)
+}
+repositories {
+    mavenCentral()
+}
+dependencies {
+    implementation project(':application:spring:properties')
+
+    /* spring */
+    implementation(libs.spring.boot.starter)
+    implementation(libs.spring.boot.starter.web)
+    implementation("ch.qos.logback:logback-classic")
+
+    /* kotlin */
+    implementation(libs.kotlin)
+    implementation(libs.kotlin.logging)
+    implementation(libs.jackson.module.kotlin)
+}
