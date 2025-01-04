@@ -10,21 +10,31 @@ import org.springframework.web.servlet.config.annotation.InterceptorRegistry
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer
 import java.util.UUID
 
-private val logger = KotlinLogging.logger {}
+private val log = KotlinLogging.logger {}
 
 @Configuration
 class HTTPInterceptor : WebMvcConfigurer {
-    override fun addInterceptors(registry: InterceptorRegistry) {
+        override fun addInterceptors(registry: InterceptorRegistry) {
         registry.addInterceptor(object : HandlerInterceptor {
-            override fun preHandle(request: HttpServletRequest, response: HttpServletResponse, handler: Any): Boolean {
+            override fun preHandle(
+                request: HttpServletRequest,
+                response: HttpServletResponse,
+                handler: Any
+            ): Boolean {
                 val traceId = UUID.randomUUID().toString()
                 MDC.put(MDCConstants.TRACE_ID.key, traceId)
-                logger.info { "-> ${request.method} ${request.requestURI}" }
+                response.addHeader(MDCConstants.TRACE_ID.key, traceId)
+                log.info { "-> ${request.method} ${request.requestURI}" }
                 return true
             }
 
-            override fun afterCompletion(request: HttpServletRequest, response: HttpServletResponse, handler: Any, ex: Exception?) {
-                logger.info { "<- ${request.method} [${response.status}] ${request.requestURI}" }
+            override fun afterCompletion(
+                request: HttpServletRequest,
+                response: HttpServletResponse,
+                handler: Any,
+                ex: Exception?
+            ) {
+                log.info { "<- ${request.method} [${response.status}] ${request.requestURI}" }
                 MDC.clear()
             }
         })
