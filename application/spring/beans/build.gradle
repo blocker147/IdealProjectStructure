@@ -13,21 +13,39 @@ dependencies {
     implementation project(':application:features:products')
     implementation project(':application:infrastructure:repository')
     implementation project(':application:infrastructure:client:product-nutrition')
-    implementation project(':application:spring:security')
-    implementation project(':application:spring:exceptions')
     implementation project(':application:spring:swagger')
     implementation project(':application:spring:admin-ui')
-    implementation project(':application:spring:logging')
+    implementation project(':application:spring:properties')
 
     /* spring */
     implementation(libs.spring.boot.starter)
     implementation(libs.spring.boot.starter.web)
+    implementation(libs.spring.boot.starter.security)
+    implementation(libs.spring.boot.starter.oauth2.client)
+    implementation("org.springframework.boot:spring-boot-starter-aop")
+    implementation("ch.qos.logback:logback-classic")
 
     /* kotlin */
     implementation(libs.kotlin)
     implementation(libs.kotlin.logging)
     implementation(libs.jackson.module.kotlin)
+
+    /* jwt */
+    implementation(libs.jjwt.api)
+    implementation(libs.jjwt.impl)
+    runtimeOnly(libs.jjwt.jackson)
+
+    /* testing */
+    testImplementation(libs.spring.boot.starter.test)
+    testImplementation(libs.spring.boot.security.test)
+    testImplementation(libs.jupiter)
+    testImplementation(libs.kotest)
+    testImplementation(libs.mockk)
 }
 bootJar {
     mainClass = 'com.example.ApplicationKt'
+}
+tasks.test {
+    useJUnitPlatform()
+    failFast = true
 }
