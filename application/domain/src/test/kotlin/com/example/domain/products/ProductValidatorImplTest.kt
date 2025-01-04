@@ -1,5 +1,6 @@
 package com.example.domain.products
 
+import com.example.domain.exceptions.ApplicationException
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.matchers.shouldBe
 import org.junit.jupiter.api.Test
@@ -18,7 +19,7 @@ class ProductValidatorImplTest {
     fun `when product has wrong count - then throw exception`() {
         val product = ProductFactory.createProduct(count = 0)
 
-        val exception = shouldThrow<IllegalArgumentException> { target.validate(product) }
+        val exception = shouldThrow<ApplicationException> { target.validate(product) }
 
         exception.message shouldBe "Wrong count: 0"
     }
@@ -27,7 +28,7 @@ class ProductValidatorImplTest {
     fun `when product has wrong title - then throw exception`() {
         val product = ProductFactory.createProduct(title = "-")
 
-        val exception = shouldThrow<IllegalArgumentException> { target.validate(product) }
+        val exception = shouldThrow<ApplicationException> { target.validate(product) }
 
         exception.message shouldBe "Wrong title length: 1"
     }

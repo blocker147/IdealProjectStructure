@@ -1,0 +1,9 @@
+@baseUrl = http://localhost:8080
+@access-token = eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIyODMwMTE1OCIsImlhdCI6MTczNTk5MzE3MywiZXhwIjoxNzM1OTk0MDczfQ.rehZCvGtS8h3qLuxt8zm4Ch3JELhiNyIHKUupXM06_50dJ-9_Q7y5ck01eouX-Ra_BrGKIG54LdGqmLBsK3uuQ
+@refresh-token = eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIyODMwMTE1OCIsImlhdCI6MTczNTk5MjAyMCwiZXhwIjoxNzM2MDc4NDIwLCJqdGkiOiJiZjFmZDIzYi03ZDdlLTQ0ZjQtYjZhYi03YzM0ZWI0Y2JmZjIifQ.I-GoCsZhNWtuM5LYZE4keYuw5pNcIyVi9hFjaTKOD1HYhA48lKsZEtMCyQpxul_hJemXkAsx6ytjt0ciwOziMg
+
+### GET request to example server
+GET {{baseUrl}}/jwt-secured
+Authorization: Bearer {{access-token}}
+
+###

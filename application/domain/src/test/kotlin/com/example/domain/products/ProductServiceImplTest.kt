@@ -1,5 +1,6 @@
 package com.example.domain.products
 
+import com.example.domain.exceptions.ApplicationException
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.matchers.shouldBe
 import io.mockk.*
@@ -38,7 +39,7 @@ class ProductServiceImplTest {
         val productId = "-1"
         every { productNutritionClientMock.findById(productId) } throws RuntimeException("No such product with id: $productId. Neither in DB nor in external service.")
 
-        val exception = shouldThrow<IllegalStateException> { target.getProductById(productId) }
+        val exception = shouldThrow<ApplicationException> { target.getProductById(productId) }
 
         exception.message shouldBe "No such product with id: $productId. Neither in DB nor in external service."
     }

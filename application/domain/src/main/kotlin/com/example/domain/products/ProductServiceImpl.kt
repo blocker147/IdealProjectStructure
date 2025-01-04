@@ -1,5 +1,6 @@
 package com.example.domain.products
 
+import com.example.domain.exceptions.ApplicationException
 import mu.KotlinLogging
 
 private val log = KotlinLogging.logger {}
@@ -37,7 +38,7 @@ class ProductServiceImpl(
             productRepository.save(product)
         } catch (e: RuntimeException) {
             log.error("Product with id: $id cannot be requested.", e)
-            throw IllegalStateException("No such product with id: $id. Neither in DB nor in external service.")
+            throw ApplicationException("No such product with id: $id. Neither in DB nor in external service.")
         }
     }
 
