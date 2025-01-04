@@ -1,4 +1,4 @@
-package com.example.spring.adminui
+package com.example.spring.configuration.adminui
 
 import jakarta.servlet.http.HttpServletRequest
 import org.springframework.stereotype.Controller

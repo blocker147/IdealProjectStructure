@@ -13,9 +13,6 @@ dependencies {
     implementation project(':application:features:products')
     implementation project(':application:infrastructure:repository')
     implementation project(':application:infrastructure:client:product-nutrition')
-    implementation project(':application:spring:swagger')
-    implementation project(':application:spring:admin-ui')
-    implementation project(':application:spring:properties')
 
     /* spring */
     implementation(libs.spring.boot.starter)
@@ -24,6 +21,8 @@ dependencies {
     implementation(libs.spring.boot.starter.oauth2.client)
     implementation("org.springframework.boot:spring-boot-starter-aop")
     implementation("ch.qos.logback:logback-classic")
+    implementation(libs.springdoc.openapi.ui)
+    implementation(libs.spring.boot.starter.thymeleaf)
 
     /* kotlin */
     implementation(libs.kotlin)

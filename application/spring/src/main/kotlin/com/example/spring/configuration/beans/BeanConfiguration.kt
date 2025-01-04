@@ -1,4 +1,4 @@
-package com.example.spring.configuration
+package com.example.spring.configuration.beans
 
 import com.example.domain.customers.CustomerRepository
 import com.example.domain.customers.CustomerService

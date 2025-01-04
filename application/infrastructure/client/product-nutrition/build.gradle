@@ -11,7 +11,6 @@ repositories {
 dependencies {
     /* modules */
     implementation project(':application:domain')
-    implementation project(':application:spring:properties')
 
     /* kotlin */
     implementation(libs.kotlin)
