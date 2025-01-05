@@ -1,10 +1,35 @@
 <configuration>
     <include resource="org/springframework/boot/logging/logback/defaults.xml"/>
     <include resource="org/springframework/boot/logging/logback/console-appender.xml" />
-
     <property name="CONSOLE_LOG_PATTERN" value="%d{yyyy-MM-dd'T'HH:mm:ss.SSSXXX} %clr(trace-id: %-36X{traceId}){yellow} %highlight(%5p) %clr(${PID}){magenta} --- [%thread] %clr(%-50logger{36} :){cyan} %msg %n"/>
 
-    <root level="INFO">
-        <appender-ref ref="CONSOLE" />
-    </root>
+    <springProfile name="local">
+        <root level="INFO">
+            <appender-ref ref="CONSOLE" />
+        </root>
+    </springProfile>
+
+    <springProfile name="logging">
+        <appender name="LOGSTASH" class="net.logstash.logback.appender.LogstashTcpSocketAppender">
+            <destination>localhost:5044</destination>
+            <encoder class="net.logstash.logback.encoder.LoggingEventCompositeJsonEncoder">
+                <providers>
+                    <timestamp />
+                    <provider class="net.logstash.logback.composite.loggingevent.LogLevelJsonProvider"/>
+                    <provider class="net.logstash.logback.composite.loggingevent.LogLevelValueJsonProvider"/>
+                    <threadName />
+                    <loggerName />
+                    <message />
+                    <mdc />
+                    <context />
+                    <stackTrace />
+                </providers>
+            </encoder>
+        </appender>
+
+        <root level="INFO">
+            <appender-ref ref="CONSOLE" />
+            <appender-ref ref="LOGSTASH" />
+        </root>
+    </springProfile>
 </configuration>
