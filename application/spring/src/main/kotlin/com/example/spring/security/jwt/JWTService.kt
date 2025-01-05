@@ -4,11 +4,14 @@ import com.example.spring.security.jwt.JWTType.REFRESH_TOKEN
 import io.jsonwebtoken.Jwts
 import io.jsonwebtoken.impl.FixedClock
 import io.jsonwebtoken.security.Keys
+import mu.KotlinLogging
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Component
 import java.time.Clock
 import java.util.Date
 import java.util.UUID
+
+private val log = KotlinLogging.logger {}
 
 @Component
 class JWTService(
@@ -34,6 +37,7 @@ class JWTService(
             jwtBuilder.id(jti)
         }
 
+        log.debug { "Generating new ${type.name}" }
         return jwtBuilder.compact()
     }
 
@@ -41,8 +45,11 @@ class JWTService(
      * @return username from token if it's valid, otherwise null
      * */
     fun verifyJWT(token: String, type: JWTType): String? {
-        if (type == REFRESH_TOKEN && blackList.contains(token)) return null
         return try {
+            if (type == REFRESH_TOKEN && blackList.contains(token)) {
+                throw IllegalStateException("Attempting to access blacklisted token")
+            }
+
             val payload = Jwts.parser()
                 .clock(FixedClock(clock.millis()))
                 .verifyWith(secretKey)
@@ -50,14 +57,18 @@ class JWTService(
                 .parseSignedClaims(token)
                 .payload
 
-            if (type == REFRESH_TOKEN && payload.id == null) null
+            if (type == REFRESH_TOKEN && payload.id == null) {
+                throw IllegalStateException("Token is missing jti")
+            }
             else payload.subject
         } catch (e: Exception) {
+            log.debug { "${type.name}: ${e.message}" }
             null
         }
     }
 
     fun blackListJWT(token: String) {
         blackList.add(token)
+        log.debug { "Blacklisting ${REFRESH_TOKEN.name}" }
     }
 }

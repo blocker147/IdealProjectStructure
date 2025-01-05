@@ -7,11 +7,14 @@ import com.example.spring.utils.HTTPUtils
 import jakarta.servlet.FilterChain
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
+import mu.KotlinLogging
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.security.authentication.InsufficientAuthenticationException
 import org.springframework.stereotype.Component
 import org.springframework.web.filter.OncePerRequestFilter
 import org.springframework.web.servlet.HandlerExceptionResolver
+
+private val log = KotlinLogging.logger {}
 
 @Component
 class JWTFilter(
@@ -79,11 +82,12 @@ class JWTFilter(
      * Otherwise, user will receive 401 Unauthorized response.
      * */
     private fun redirectOrReturnErrorMessage(request: HttpServletRequest, response: HttpServletResponse) {
+        log.warn { "Unauthenticated request made to ${request.requestURI}" }
         if (HTTPUtils.isRequestFromBrowser(request)) {
             HTTPUtils.redirect(response, "/")
         } else {
             val exception = InsufficientAuthenticationException("Access token is expired or invalid. "
-                    + "Authenticate again using OAuth2 or provide refresh token to receive new access token.")
+                    + "Authenticate again using OAuth2 or provide refresh token to receive new access token")
             response.status = HttpServletResponse.SC_UNAUTHORIZED
             resolver.resolveException(request, response, null, exception)
         }

@@ -44,7 +44,7 @@ class GlobalExceptionHandler(
     @ExceptionHandler(AuthenticationException::class)
     fun handleAuthenticationException(exception: AuthenticationException): ResponseEntity<ErrorResponse> {
         logException(exception)
-        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(
             ErrorResponse(
                 clock.instant().toString(),
                 exception.message ?: "Something went wrong with authentication"
@@ -55,7 +55,7 @@ class GlobalExceptionHandler(
     @ExceptionHandler(AccessDeniedException::class)
     fun handleAuthenticationException(exception: AccessDeniedException): ResponseEntity<ErrorResponse> {
         logException(exception)
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(
             ErrorResponse(
                 clock.instant().toString(),
                 exception.message ?: "Something went wrong with authorization"

@@ -25,6 +25,7 @@ product-nutrition:
 logging:
   level:
     org.springframework.security: INFO
+    com.example.spring.security: DEBUG
 
 springdoc:
   api-docs:
