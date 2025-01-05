@@ -3,6 +3,7 @@ package com.example.spring.exceptions
 import com.example.domain.exceptions.ApplicationException
 import com.example.infrastructure.client.productnutrition.exceptions.DownstreamException
 import mu.KotlinLogging
+import org.slf4j.event.Level
 import org.springframework.context.annotation.Configuration
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
@@ -32,7 +33,7 @@ class GlobalExceptionHandler(
 
     @ExceptionHandler(DownstreamException::class)
     fun handleDownstreamException(exception: DownstreamException): ResponseEntity<ErrorResponse> {
-        logException(exception)
+        logException(exception, Level.WARN)
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
             ErrorResponse(
                 clock.instant().toString(),
@@ -43,7 +44,7 @@ class GlobalExceptionHandler(
 
     @ExceptionHandler(AuthenticationException::class)
     fun handleAuthenticationException(exception: AuthenticationException): ResponseEntity<ErrorResponse> {
-        logException(exception)
+        logException(exception, Level.WARN)
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(
             ErrorResponse(
                 clock.instant().toString(),
@@ -54,7 +55,7 @@ class GlobalExceptionHandler(
 
     @ExceptionHandler(AccessDeniedException::class)
     fun handleAuthenticationException(exception: AccessDeniedException): ResponseEntity<ErrorResponse> {
-        logException(exception)
+        logException(exception, Level.WARN)
         return ResponseEntity.status(HttpStatus.FORBIDDEN).body(
             ErrorResponse(
                 clock.instant().toString(),
@@ -74,10 +75,10 @@ class GlobalExceptionHandler(
         )
     }
 
-    private fun logException(exception: Exception) {
-        log.warn("${exception.message}.${
+    private fun logException(exception: Exception, level: Level = Level.DEBUG) {
+        log.atLevel(level).setMessage("${exception.message}.${
             if(exception.stackTrace.isNotEmpty()) " Thrown from: ${exception.stackTrace[0]}" else ""
-        }")
+        }").log()
     }
 }
 

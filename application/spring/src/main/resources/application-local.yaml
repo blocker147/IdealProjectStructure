@@ -26,6 +26,7 @@ logging:
   level:
     org.springframework.security: INFO
     com.example.spring.security: DEBUG
+    com.example.spring.exceptions: DEBUG
 
 springdoc:
   api-docs:
