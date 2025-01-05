@@ -1,4 +1,4 @@
-package com.example.spring.security.utils
+package com.example.spring.utils
 
 import com.example.spring.security.jwt.JWTType
 import com.example.spring.security.jwt.JWTType.ACCESS_TOKEN
@@ -88,5 +88,17 @@ object HTTPUtils {
     fun redirect(response: HttpServletResponse, location: String) {
         response.status = HttpServletResponse.SC_FOUND
         response.setHeader(HttpHeaders.LOCATION, location)
+    }
+
+    private const val STATIC_RESOURCE_PREFIX = "/static"
+    private val STATIC_RESOURCE_SUFFIX = arrayOf(".css", ".html", ".js", ".ico")
+
+    /**
+     * @return true if the path is a static resource
+     * */
+    fun isStaticResource(path: String): Boolean {
+        return path.startsWith(STATIC_RESOURCE_PREFIX)
+                || STATIC_RESOURCE_SUFFIX.any { path.endsWith(it) }
+                || STATIC_RESOURCE_SUFFIX.any { path.endsWith("$it.map") }
     }
 }

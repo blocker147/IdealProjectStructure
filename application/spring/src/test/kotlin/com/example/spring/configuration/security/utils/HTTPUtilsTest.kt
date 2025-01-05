@@ -2,7 +2,7 @@ package com.example.spring.configuration.security.utils
 
 import com.example.spring.security.jwt.JWTType.ACCESS_TOKEN
 import com.example.spring.security.jwt.JWTType.REFRESH_TOKEN
-import com.example.spring.security.utils.HTTPUtils
+import com.example.spring.utils.HTTPUtils
 import io.kotest.matchers.shouldBe
 import org.junit.jupiter.api.Test
 import org.springframework.http.HttpHeaders

@@ -3,7 +3,7 @@ package com.example.spring.security.jwt
 import com.example.spring.security.config.AuthenticationUtils
 import com.example.spring.security.jwt.JWTType.ACCESS_TOKEN
 import com.example.spring.security.jwt.JWTType.REFRESH_TOKEN
-import com.example.spring.security.utils.HTTPUtils
+import com.example.spring.utils.HTTPUtils
 import jakarta.servlet.FilterChain
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
@@ -20,13 +20,12 @@ class JWTFilter(
 ) : OncePerRequestFilter() {
 
     companion object {
-        private val STATIC_RESOURCES = arrayOf(".css", ".js", ".png")
-        private val FILTERED_PATHS = arrayOf("/", "/favicon.ico", "/error")
+        private val FILTERED_PATHS = arrayOf("/", "/error")
     }
 
     override fun shouldNotFilter(request: HttpServletRequest): Boolean {
         val path = request.requestURI
-        if (STATIC_RESOURCES.any { path.endsWith(it) }) return true
+        if (HTTPUtils.isStaticResource(path)) return true
         if (FILTERED_PATHS.any { path == it }) return true
         return super.shouldNotFilter(request)
     }

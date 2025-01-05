@@ -1,6 +1,6 @@
 package com.example.spring.security.config
 
-import com.example.spring.security.utils.HTTPUtils
+import com.example.spring.utils.HTTPUtils
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
 import org.springframework.beans.factory.annotation.Autowired
