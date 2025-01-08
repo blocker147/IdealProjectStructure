@@ -50,3 +50,21 @@ tasks.test {
     useJUnitPlatform()
     failFast = true
 }
+
+group = 'com.example'
+version = '0.0.1-SNAPSHOT'
+
+springBoot {
+    buildInfo {
+        properties {
+            version = project.version.toString()
+            group = project.group.toString()
+            artifact = project.name
+            name = "MyApplication"
+            additional = [
+                'kotlin.version': libs.plugins.kotlin.asProvider().get().version,
+                'spring-boot.version': libs.plugins.spring.boot.get().version,
+            ]
+        }
+    }
+}
