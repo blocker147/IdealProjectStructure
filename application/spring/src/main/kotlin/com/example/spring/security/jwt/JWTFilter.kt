@@ -3,15 +3,18 @@ package com.example.spring.security.jwt
 import com.example.spring.security.config.AuthenticationUtils
 import com.example.spring.security.jwt.JWTType.ACCESS_TOKEN
 import com.example.spring.security.jwt.JWTType.REFRESH_TOKEN
-import com.example.spring.security.utils.HTTPUtils
+import com.example.spring.utils.HTTPUtils
 import jakarta.servlet.FilterChain
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
+import mu.KotlinLogging
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.security.authentication.InsufficientAuthenticationException
 import org.springframework.stereotype.Component
 import org.springframework.web.filter.OncePerRequestFilter
 import org.springframework.web.servlet.HandlerExceptionResolver
+
+private val log = KotlinLogging.logger {}
 
 @Component
 class JWTFilter(
@@ -20,13 +23,12 @@ class JWTFilter(
 ) : OncePerRequestFilter() {
 
     companion object {
-        private val STATIC_RESOURCES = arrayOf(".css", ".js", ".png")
-        private val FILTERED_PATHS = arrayOf("/", "/favicon.ico", "/error")
+        private val FILTERED_PATHS = arrayOf("/", "/error")
     }
 
     override fun shouldNotFilter(request: HttpServletRequest): Boolean {
         val path = request.requestURI
-        if (STATIC_RESOURCES.any { path.endsWith(it) }) return true
+        if (HTTPUtils.isStaticResource(path)) return true
         if (FILTERED_PATHS.any { path == it }) return true
         return super.shouldNotFilter(request)
     }
@@ -80,11 +82,12 @@ class JWTFilter(
      * Otherwise, user will receive 401 Unauthorized response.
      * */
     private fun redirectOrReturnErrorMessage(request: HttpServletRequest, response: HttpServletResponse) {
+        log.warn { "Unauthenticated request made to ${request.requestURI}" }
         if (HTTPUtils.isRequestFromBrowser(request)) {
             HTTPUtils.redirect(response, "/")
         } else {
             val exception = InsufficientAuthenticationException("Access token is expired or invalid. "
-                    + "Authenticate again using OAuth2 or provide refresh token to receive new access token.")
+                    + "Authenticate again using OAuth2 or provide refresh token to receive new access token")
             response.status = HttpServletResponse.SC_UNAUTHORIZED
             resolver.resolveException(request, response, null, exception)
         }

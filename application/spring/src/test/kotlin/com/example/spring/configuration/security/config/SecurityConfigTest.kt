@@ -1,5 +1,7 @@
 package com.example.spring.configuration.security.config
 
+import com.example.spring.logging.LoggingFilter
+import com.example.spring.security.config.AfterOAuth2FailedAuthentication
 import com.example.spring.security.config.AfterOAuth2SuccessfulAuthentication
 import com.example.spring.security.config.AuthenticationExceptionHandler
 import com.example.spring.security.config.SecurityConfig
@@ -32,9 +34,11 @@ import java.time.Clock
 [
     SecurityConfigTest.AppConfig::class,
     SecurityConfig::class,
+    LoggingFilter::class,
     JWTFilter::class,
     JWTService::class,
     AfterOAuth2SuccessfulAuthentication::class,
+    AfterOAuth2FailedAuthentication::class,
     AuthenticationExceptionHandler::class,
     JWTService::class,
 ])

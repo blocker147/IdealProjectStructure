@@ -19,10 +19,12 @@ dependencies {
     implementation(libs.spring.boot.starter.web)
     implementation(libs.spring.boot.starter.security)
     implementation(libs.spring.boot.starter.oauth2.client)
-    implementation("org.springframework.boot:spring-boot-starter-aop")
-    implementation("ch.qos.logback:logback-classic")
     implementation(libs.springdoc.openapi.ui)
     implementation(libs.spring.boot.starter.thymeleaf)
+
+    /* logging */
+    implementation("ch.qos.logback:logback-classic")
+    implementation 'net.logstash.logback:logstash-logback-encoder:6.6'
 
     /* kotlin */
     implementation(libs.kotlin)
@@ -47,4 +49,22 @@ bootJar {
 tasks.test {
     useJUnitPlatform()
     failFast = true
+}
+
+group = 'com.example'
+version = '0.0.1-SNAPSHOT'
+
+springBoot {
+    buildInfo {
+        properties {
+            version = project.version.toString()
+            group = project.group.toString()
+            artifact = project.name
+            name = "MyApplication"
+            additional = [
+                'kotlin.version': libs.plugins.kotlin.asProvider().get().version,
+                'spring-boot.version': libs.plugins.spring.boot.get().version,
+            ]
+        }
+    }
 }

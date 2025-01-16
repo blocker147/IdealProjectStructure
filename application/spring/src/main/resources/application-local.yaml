@@ -25,6 +25,8 @@ product-nutrition:
 logging:
   level:
     org.springframework.security: INFO
+    com.example.spring.security: DEBUG
+    com.example.spring.exceptions: DEBUG
 
 springdoc:
   api-docs:
@@ -35,3 +37,5 @@ springdoc:
 jwt:
   signing-secret-key: ${JWT_SIGNING_SECRET_KEY}
 
+app:
+  name: 'product-service'
