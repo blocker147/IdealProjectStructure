@@ -29,8 +29,6 @@ logging:
     com.example.spring.exceptions: DEBUG
 
 springdoc:
-  api-docs:
-    path: /custom-api-docs
   swagger-ui:
     path: /custom-swagger-ui
 

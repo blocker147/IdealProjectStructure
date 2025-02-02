@@ -1,9 +1,12 @@
+import org.openapitools.generator.gradle.plugin.tasks.GenerateTask
+
 plugins {
     alias(libs.plugins.kotlin)
     alias(libs.plugins.kotlin.spring)
     alias(libs.plugins.spring.boot)
     alias(libs.plugins.spring.dependency.management)
     alias(libs.plugins.openapi.generator)
+    alias(libs.plugins.kapt)
 }
 repositories {
     mavenCentral()
@@ -19,47 +22,40 @@ dependencies {
 
     /* spring */
     implementation(libs.spring.boot.starter)
-
-    /* feign */
-    implementation(libs.feign.core)
-    implementation(libs.feign.form)
-    implementation(libs.feign.okhttp)
-    implementation(libs.feign.slf4j)
-    implementation(libs.feign.jackson)
-    implementation(libs.jackson.datatype.jsr310)
+    implementation(libs.spring.boot.starter.web)
+    implementation(libs.mapstruct)
+    kapt(libs.mapstruct.processor)
 
     /* testing */
     testImplementation(libs.jupiter)
     testImplementation(libs.kotest)
     testImplementation(libs.wiremock)
 }
-openApiGenerate {
-//    https://openapi-generator.tech/docs/generators/java/
-    generatorName = "java" // Use the Java generator
-//    inputSpec = "$rootDir/application/properties/src/main/resources/open-api-specs2/product-nutrition-v1.yaml"
-    inputSpec = "$projectDir/src/main/resources/open-api-specs/product-nutrition-v1.yaml" // Path to the YAML file
-    outputDir = "$buildDir/generated" // Output directory for generated code
-    apiPackage = "com.example.infrastructure.client.productnutrition.api" // Package for API interfaces
-    modelPackage = "com.example.infrastructure.client.productnutrition.models" // Package for models
-    invokerPackage = "com.example.infrastructure.client.productnutrition.invoker" // Package for invoker classes
-
+tasks.register('getProductNutritionByIdSpec', GenerateTask) {
+    generatorName = "kotlin"
+    inputSpec = "$projectDir/src/main/resources/open-api-specs/get-product-nutrition-by-id-v2.yaml"
+    outputDir = "$buildDir/generated"
+    apiPackage = "com.example.infrastructure.client.productnutrition.v1.api"
+    modelPackage = "com.example.infrastructure.client.productnutrition.v1.models"
+    invokerPackage = "com.example.infrastructure.client.productnutrition.v1.invoker"
     configOptions = [
-            generateConstructorWithAllArgs: "true", // Generate constructors with all arguments
-            generateBuilders              : "true", // Generate builder classes
-            useJakartaEe                  : "true", // Use Jakarta EE annotations
-            openApiNullable               : "false", // Don't use OpenAPI nullable
-            library                       : "feign", // Use Feign client
-            documentationProvider         : "none", // Don't generate documentation
-            useTags                       : "true" // Separate files by tags (optional)
+            library                       : "jvm-spring-restclient",
+            serializationLibrary          : "jackson",
+            useSpringBoot3                : "true",
     ]
 }
+tasks.configureEach {
+    if (name == "kaptGenerateStubsKotlin") {
+        mustRunAfter(tasks.getProductNutritionByIdSpec)
+    }
+}
 compileKotlin {
-    dependsOn "openApiGenerate"
+    dependsOn "getProductNutritionByIdSpec"
 }
 sourceSets {
     main {
-        java {
-            srcDirs += "$buildDir/generated/src/main/java"
+        kotlin {
+            srcDirs += "$buildDir/generated/src/main/kotlin"
         }
     }
 }

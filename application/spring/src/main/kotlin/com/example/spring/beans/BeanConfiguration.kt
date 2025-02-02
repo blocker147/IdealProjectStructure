@@ -30,10 +30,10 @@ class BeanConfiguration {
 
     @Bean
     fun productNutritionClient(
-        productNutritionMapper: ProductNutritionMapper,
         productNutritionProperties: ProductNutritionProperties,
+        productNutritionMapper: ProductNutritionMapper,
     ): ProductNutritionClient {
-        return ProductNutritionClientImpl(productNutritionMapper, productNutritionProperties)
+        return ProductNutritionClientImpl(productNutritionProperties, productNutritionMapper)
     }
 
     @Bean

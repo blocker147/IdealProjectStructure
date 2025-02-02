@@ -13,7 +13,8 @@ jackson-datatype-jsr310     = "2.15.2"
 javax-servlet-api           = "4.0.1"
 # --- Other libraries versions ---
 jjwt                        = "0.12.6"
-springdoc-openapi-ui        = "2.2.0"
+springdoc-openapi-ui        = "2.8.4"
+mapstruct                   = "1.6.3"
 # --- Testing liraries versions ---
 jupiter                     = "5.10.0"
 kotest                      = "5.7.2"
@@ -49,6 +50,8 @@ jjwt-api                            = { module = "io.jsonwebtoken:jjwt-api",    
 jjwt-impl                           = { module = "io.jsonwebtoken:jjwt-impl",                                       version.ref = "jjwt" }
 jjwt-jackson                        = { module = "io.jsonwebtoken:jjwt-jackson",                                    version.ref = "jjwt" }
 springdoc-openapi-ui                = { module = "org.springdoc:springdoc-openapi-starter-webmvc-ui",               version.ref = "springdoc-openapi-ui" }
+mapstruct                           = { module = "org.mapstruct:mapstruct",                                         version.ref = "mapstruct" }
+mapstruct-processor                 = { module = "org.mapstruct:mapstruct-processor",                               version.ref = "mapstruct" }
 # --- Testing libraries ---
 jupiter                             = { module = "org.junit.jupiter:junit-jupiter",                                 version.ref = "jupiter" }
 kotest                              = { module = "io.kotest:kotest-assertions-core",                                version.ref = "kotest" }
@@ -64,8 +67,9 @@ spring-boot-security-test           = { module = "org.springframework.security:s
 # --- Kotlin plugins ---
 kotlin                              = { id = "org.jetbrains.kotlin.jvm",                version = "1.9.10" }
 kotlin-spring                       = { id = "org.jetbrains.kotlin.plugin.spring",      version = "1.9.10" }
+kapt                                = { id = "org.jetbrains.kotlin.kapt",               version = "1.9.10" }
 # --- Spring plugins ---
-spring-boot                         = { id = "org.springframework.boot",                version = "3.1.4" }
+spring-boot                         = { id = "org.springframework.boot",                version = "3.4.2" }
 spring-dependency-management        = { id = "io.spring.dependency-management",         version = "1.1.3" }
 # --- Open-API generator plugins ---
-openapi-generator                   = { id = "org.openapi.generator",                   version = "7.0.0" }
+openapi-generator                   = { id = "org.openapi.generator",                   version = "7.11.0" }
