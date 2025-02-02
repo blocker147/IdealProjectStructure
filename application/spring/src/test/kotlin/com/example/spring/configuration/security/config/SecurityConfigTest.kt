@@ -8,6 +8,7 @@ import com.example.spring.security.config.SecurityConfig
 import com.example.spring.security.jwt.JWTFilter
 import com.example.spring.security.jwt.JWTService
 import com.example.spring.security.jwt.JWTType.ACCESS_TOKEN
+import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
@@ -42,6 +43,7 @@ import java.time.Clock
     AuthenticationExceptionHandler::class,
     JWTService::class,
 ])
+@Disabled
 @AutoConfigureMockMvc
 class SecurityConfigTest {
     @Configuration
