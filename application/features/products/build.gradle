@@ -1,3 +1,5 @@
+import org.openapitools.generator.gradle.plugin.tasks.GenerateTask
+
 plugins {
     alias(libs.plugins.kotlin)
     alias(libs.plugins.kotlin.spring)
@@ -19,9 +21,7 @@ dependencies {
 
     /* spring */
     implementation(libs.spring.boot.starter.web)
-
-    /* open-api-generator */
-    compileOnly(libs.javax.servlet.api)
+    implementation(libs.springdoc.openapi.ui)
 
     /* testing */
     testImplementation(libs.jupiter)
@@ -29,25 +29,31 @@ dependencies {
     testImplementation(libs.mockk)
     testImplementation(libs.spring.boot.starter.test)
 }
-openApiGenerate {
-    generatorName = "kotlin-spring" // Use the Kotlin Spring generator
-    inputSpec = "$projectDir/src/main/resources/open-api-specs/products-v1.yaml" // Path to the YAML file
-    outputDir = "$buildDir/generated" // Output directory for generated code
-    apiPackage = "com.example.features.products.api" // Package for API interfaces
-    modelPackage = "com.example.features.products.models" // Package for models
+tasks.register('generateProductsSpec', GenerateTask) {
+    generatorName = "kotlin-spring"
+    inputSpec = "$projectDir/src/main/resources/open-api-specs/products-v1.yaml"
+    outputDir = "$buildDir/generated"
+    apiPackage = "com.example.features.products.api"
+    modelPackage = "com.example.features.products.models"
 
     configOptions = [
-            interfaceOnly        : "true",    // Generate only interfaces (no controllers)
-            skipDefaultInterface : "true", // Don't generate default interfaces
-            useBeanValidation    : "false", // Don't use Bean Validation
-            documentationProvider: "none", // Don't generate documentation
-            exceptionHandler     : "false", // Don't generate exception handlers
-//            dateLibrary: "java8",     // Use Java 8 date library
-            useTags              : "true"           // Separate files by tags (optional)
+            useJakartaEe               : "true",
+            hideGenerationTimestamp    : "true",
+            documentationProvider      : "springdoc",
+            openApiNullable            : "false",
+            library                    : "spring-cloud",
+            useBeanValidation          : "false",
+            interfaceOnly              : "true",
+            exceptionHandler           : "false",
+            useTags                    : "true",
     ]
+    doLast {
+        delete("${buildDir}/generated/src/main/kotlin/org")
+        delete("${buildDir}/generated/src/main/kotlin/com/example/features/products/api/ProductsApiClient.kt")
+    }
 }
 compileKotlin {
-    dependsOn "openApiGenerate"
+    dependsOn "generateProductsSpec"
 }
 sourceSets {
     main {
