@@ -3,11 +3,12 @@ package com.example.domain.products
 object ProductFactory {
     fun createProduct(
         id: String? = null,
+        _id: Long = -1L,
         title: String = "title",
         count: Int = 0,
         nutrition: ProductNutrition? = null,
     ): Product {
-        return Product(id = id, title = title, count = count, nutrition = nutrition)
+        return Product(id = id, _id = _id, title = title, count = count, nutrition = nutrition)
     }
 
     fun createProductNutrition(

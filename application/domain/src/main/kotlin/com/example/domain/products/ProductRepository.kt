@@ -11,5 +11,8 @@ interface ProductRepository {
      * @throws RuntimeException if the product with the given ID is not found
      */
     fun findById(id: String): Product
+
+    // todo: improve method signature to receive single object for filters instead of multiple nullable parameters
+    fun findAllBy(minCount: Int?, maxCount: Int?, limit: Int, selfId: Long?): ProductPage
     fun update(productId: String, product: Product)
 }

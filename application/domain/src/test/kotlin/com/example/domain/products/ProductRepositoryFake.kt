@@ -15,6 +15,10 @@ object ProductRepositoryFake : ProductRepository {
         return products[id] ?: throw IndexOutOfBoundsException("No such product with id: $id")
     }
 
+    override fun findAllBy(minCount: Int?, maxCount: Int?, limit: Int, selfId: Long?): ProductPage {
+        TODO("Not yet implemented")
+    }
+
     override fun update(productId: String, product: Product) {
         products[productId] = product
     }

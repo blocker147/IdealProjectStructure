@@ -26,6 +26,10 @@ class ProductServiceImpl(
         }
     }
 
+    override fun getProducts(minCount: Int?, maxCount: Int?, limit: Int, currentProductId: Long?): ProductPage {
+        return productRepository.findAllBy(minCount, maxCount, limit, currentProductId)
+    }
+
     private fun fetchAndCacheProduct(id: String): Product {
         return try {
             val productNutrition = productNutritionClient.findById(id)

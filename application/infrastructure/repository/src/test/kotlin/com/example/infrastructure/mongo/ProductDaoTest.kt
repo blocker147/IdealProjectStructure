@@ -16,7 +16,7 @@ class ProductDaoTest : AbstractMongoTest() {
 
     @Test
     fun `when attempting to find by title - return document`() {
-        val expected = Product(title = "Apple", count = 10)
+        val expected = Product(generatedId = -1L, title = "Apple", count = 10)
         target.save(expected)
 
         val actual = target.findByTitle("Apple")

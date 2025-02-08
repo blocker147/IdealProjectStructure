@@ -9,14 +9,16 @@ import org.bson.Document
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.TestInstance
+import org.springframework.data.domain.Sort
 import org.springframework.data.mongodb.core.MongoTemplate
+import org.springframework.data.mongodb.core.index.Index
 import org.springframework.data.mongodb.repository.support.MongoRepositoryFactory
 import java.util.UUID
 import java.util.concurrent.TimeUnit
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 abstract class AbstractMongoTest {
-    private lateinit var mongoTemplate: MongoTemplate
+    protected lateinit var mongoTemplate: MongoTemplate
     protected lateinit var repositoryFactory: MongoRepositoryFactory
 
     companion object {
@@ -47,6 +49,10 @@ abstract class AbstractMongoTest {
             val uniqueDatabaseNameForEveryTest = UUID.randomUUID().toString()
             mongoTemplate = MongoTemplate(it, uniqueDatabaseNameForEveryTest)
             repositoryFactory = MongoRepositoryFactory(mongoTemplate)
+
+            mongoTemplate.indexOps(Product::class.java).ensureIndex(
+                Index().on("generatedId", Sort.Direction.ASC)
+            )
         }
     }
 }

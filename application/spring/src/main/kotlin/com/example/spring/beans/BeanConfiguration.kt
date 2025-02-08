@@ -13,8 +13,10 @@ import com.example.infrastructure.client.productnutrition.ProductNutritionProper
 import com.example.infrastructure.inmemory.InMemoryCustomerRepository
 import com.example.infrastructure.mongo.ProductDao
 import com.example.infrastructure.mongo.ProductRepositoryImpl
+import com.fasterxml.jackson.databind.ObjectMapper
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
+import org.springframework.data.mongodb.core.MongoTemplate
 import java.time.Clock
 
 @Configuration
@@ -45,8 +47,9 @@ class BeanConfiguration {
     fun productRepository(
         productDao: ProductDao,
         clock: Clock,
+        mongoTemplate: MongoTemplate,
     ): ProductRepository {
-        return ProductRepositoryImpl(productDao, clock)
+        return ProductRepositoryImpl(productDao, clock, mongoTemplate)
     }
 
     @Bean
@@ -66,8 +69,9 @@ class BeanConfiguration {
     fun productsUseCase(
         productService: ProductService,
         productMapper: ProductMapper,
+        objectMapper: ObjectMapper,
     ): ProductsUseCase {
-        return ProductUseCaseImpl(productService, productMapper)
+        return ProductUseCaseImpl(productService, productMapper, objectMapper)
     }
 
     @Bean

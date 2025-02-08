@@ -19,6 +19,7 @@ dependencies {
     implementation(libs.spring.boot.starter.web)
     implementation(libs.spring.boot.starter.security)
     implementation(libs.spring.boot.starter.oauth2.client)
+    implementation(libs.spring.boot.starter.data.mongodb)
     implementation(libs.springdoc.openapi.ui)
     implementation(libs.spring.boot.starter.thymeleaf)
 

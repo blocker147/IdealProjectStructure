@@ -24,7 +24,52 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Product'
-
+    get:
+      tags:
+        - Products
+      summary: Retrieve all products
+      operationId: getProducts
+      parameters:
+        - name: min_count
+          in: query
+          required: false
+          schema:
+            type: integer
+            format: int32
+            example: 10
+            description: Filter items by minimum count
+        - name: max_count
+          in: query
+          required: false
+          schema:
+            type: integer
+            format: int32
+            example: 100
+            description: Filter items by maximum count
+        - name: limit
+          in: query
+          required: false
+          schema:
+            type: integer
+            format: int32
+            default: 25
+            example: 25
+            enum: [ 25, 50 ]
+            description: Amount of items to return
+        - name: cursor
+          in: query
+          required: false
+          schema:
+            type: string
+            example: 3a5c2e2d1a57d7e4e9b8f6d7a8b9c3d1
+            description: Cursor to navigate through pages (hashed value)
+      responses:
+        200:
+          description: A list of products
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProductPage'
   /products/{id}:
     get:
       tags:
@@ -53,6 +98,100 @@ paths:
 
 components:
   schemas:
+    ProductPage:
+      type: object
+      properties:
+        cursor:
+          $ref: '#/components/schemas/Cursor'
+        limit:
+          type: integer
+          format: int32
+          default: 25
+          example: 25
+          enum: [ 25, 50 ]
+          description: Max amount of items on page
+        total:
+          type: integer
+          format: int32
+          example: 25
+          description: Exact amount of items on page
+        items:
+          type: array
+          default: [ ]
+          items:
+            $ref: '#/components/schemas/Product'
+      required:
+        - cursor
+        - limit
+        - total
+        - items
+    Cursor:
+      type: object
+      properties:
+        position:
+          $ref: '#/components/schemas/Position'
+        queryParameters:
+          type: array
+          default: [ ]
+          items:
+            $ref: '#/components/schemas/QueryParameter'
+      required:
+        - position
+        - queryParameters
+    Position:
+      type: object
+      properties:
+        first:
+          type: string
+          format: uri
+          nullable: true
+          example: /products?cursor=3a5c2e2d1a57d7e4e9b8f6d7a8b9c3d1
+          description: Path to first page or null if already at first page
+        prev:
+          type: string
+          format: uri
+          nullable: true
+          example: /products?cursor=3a5c2e2d1a57d7e4e9b8f6d7a8b9c3d1
+          description: Path to previous page or null if at first page
+        self:
+          type: string
+          format: uri
+          nullable: false
+          example: /products?cursor=3a5c2e2d1a57d7e4e9b8f6d7a8b9c3d1
+          description: Path to self page
+        next:
+          type: string
+          format: uri
+          nullable: true
+          example: /products?cursor=3a5c2e2d1a57d7e4e9b8f6d7a8b9c3d1
+          description: Path to next page or null if at last page
+        last:
+          type: string
+          format: uri
+          nullable: true
+          example: /products?cursor=3a5c2e2d1a57d7e4e9b8f6d7a8b9c3d1
+          description: Path to last page or null if already at last page
+      required:
+        - first
+        - prev
+        - self
+        - next
+        - last
+    QueryParameter:
+      type: object
+      properties:
+        key:
+          type: string
+          nullable: false
+          example: min_count
+        value:
+          type: object
+          nullable: false
+          example: 10
+      required:
+        - key
+        - value
+
     Product:
       type: object
       properties:
